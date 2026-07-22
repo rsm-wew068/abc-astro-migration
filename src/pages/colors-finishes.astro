@@ -1,0 +1,179 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { breadcrumbSchema } from '../lib/schema';
+import { colorsImage, finishesImage } from '../lib/cmsImages';
+import colorsData from '../data/colors.json';
+import finishesData from '../data/finishes.json';
+import heroBg from '../assets/service/hero.jpg';
+
+type Color = { slug: string; name: string; img: string; material: string; design: string; family: string };
+type Finish = { slug: string; name: string; img: string; material: string; design: string; category: string; description: string };
+const colors = colorsData as Color[];
+const finishes = finishesData as Finish[];
+
+const colorFamilies = [...new Set(colors.map((c) => c.family))];
+const finishCats = [...new Set(finishes.map((f) => f.category))];
+
+const characteristics = [
+  'Stain Resistance', 'Easy Cleaning', 'Long Durability',
+  'Silk Touch', 'Anti-Fingerprints', 'Eco-friendly',
+];
+
+const applied = colors.filter((c) => c.design).slice(0, 6);
+---
+<BaseLayout
+  title="Colors & Finishes | American Built Cabinets"
+  description="Explore American Built Cabinets' cabinet colors and finishes — paint, stain, laminate, and veneer options in solid and wood tones for Bay Area kitchens."
+  schemaNodes={[breadcrumbSchema([{ name: 'Home', url: '/' }, { name: 'Color & Finish', url: '/colors-finishes' }])]}
+>
+  <PageHero bg={heroBg} eyebrow="Make It Yours" title="Colors & Finishes" minHeight="60vh" />
+
+  <!-- FEATURED COLORS -->
+  <section class="section colors" data-filter-scope>
+    <div class="container">
+      <h2 class="center">Featured Colors</h2>
+      <div class="pills">
+        <button class="pill is-active" data-filter="*">All</button>
+        {colorFamilies.map((f) => <button class="pill" data-filter={f}>{f}</button>)}
+      </div>
+      <div class="swatch-grid">
+        {colors.map((c) => {
+          const img = colorsImage(c.img);
+          return (
+            <figure class="swatch" data-tag={c.family}>
+              {img && <Image src={img} alt={c.name} widths={[200, 320]} sizes="200px" loading="lazy" />}
+              <figcaption>
+                <span class="swatch__name">{c.name}</span>
+                <span class="swatch__meta">{c.material}</span>
+              </figcaption>
+            </figure>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- FINISHES -->
+  <section class="section section--muted finishes" data-filter-scope>
+    <div class="container">
+      <h2 class="center">Finishes</h2>
+      <div class="pills">
+        <button class="pill is-active" data-filter="*">All</button>
+        {finishCats.map((f) => <button class="pill" data-filter={f}>{f}</button>)}
+      </div>
+      <div class="swatch-grid">
+        {finishes.map((f) => {
+          const img = finishesImage(f.img);
+          return (
+            <figure class="swatch swatch--wide" data-tag={f.category}>
+              {img && <Image src={img} alt={f.name} widths={[240, 400]} sizes="240px" loading="lazy" />}
+              <figcaption>
+                <span class="swatch__name">{f.name}</span>
+                {f.description && <span class="swatch__desc">{f.description}</span>}
+              </figcaption>
+            </figure>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- APPLIED -->
+  {applied.length > 0 && (
+    <section class="section applied">
+      <div class="container">
+        <p class="eyebrow center">See It Applied</p>
+        <h2 class="center">Colors in real cabinetry.</h2>
+        <div class="applied-grid">
+          {applied.map((c) => {
+            const img = colorsImage(c.design);
+            return img ? (
+              <figure class="acard">
+                <Image src={img} alt={`${c.name} applied`} widths={[400, 700]} sizes="(max-width: 900px) 100vw, 33vw" loading="lazy" />
+                <figcaption>{c.name}</figcaption>
+              </figure>
+            ) : null;
+          })}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <!-- CHARACTERISTICS -->
+  <section class="section section--muted chars">
+    <div class="container">
+      <h2 class="center">Built to last, easy to live with.</h2>
+      <div class="chars-grid">
+        {characteristics.map((c) => <div class="chip">{c}</div>)}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section section--dark cta">
+    <div class="container cta__inner">
+      <h2>Ready to choose your finish?</h2>
+      <p>Book a design consultation and we'll help you match the right color and door style to your space.</p>
+      <a href="/contact" class="btn">Book a Consultation</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // Client-side filtering for the color/finish pill groups.
+  for (const scope of document.querySelectorAll('[data-filter-scope]')) {
+    const pills = scope.querySelectorAll<HTMLButtonElement>('.pill');
+    const items = scope.querySelectorAll<HTMLElement>('[data-tag]');
+    pills.forEach((pill) =>
+      pill.addEventListener('click', () => {
+        const f = pill.dataset.filter;
+        pills.forEach((p) => p.classList.toggle('is-active', p === pill));
+        items.forEach((it) => {
+          it.style.display = f === '*' || it.dataset.tag === f ? '' : 'none';
+        });
+      }),
+    );
+  }
+</script>
+
+<style>
+  .center { text-align: center; }
+  h2.center { margin-bottom: 24px; }
+
+  .pills { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 36px; }
+  .pill {
+    font-family: var(--font-ui); font-size: 14px; padding: 8px 20px; border-radius: 999px;
+    border: 1px solid rgba(0,0,0,0.15); background: #fff; color: var(--color-body); cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .pill:hover { border-color: var(--color-accent); }
+  .pill.is-active { background: var(--color-off-black); color: #fff; border-color: var(--color-off-black); }
+
+  .swatch-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .swatch { margin: 0; }
+  .swatch :global(img) { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: var(--radius); }
+  .swatch--wide :global(img) { aspect-ratio: 4 / 3; }
+  .swatch figcaption { display: flex; flex-direction: column; gap: 2px; margin-top: 10px; }
+  .swatch__name { font-family: var(--font-ui); font-weight: 600; font-size: 14px; color: var(--color-off-black); }
+  .swatch__meta, .swatch__desc { font-family: var(--font-ui); font-size: 12px; color: var(--color-body); }
+
+  .applied-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 28px; }
+  .acard { margin: 0; }
+  .acard :global(img) { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius); }
+  .acard figcaption { font-family: var(--font-ui); font-size: 14px; color: var(--color-body); margin-top: 10px; text-align: center; }
+
+  .chars-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 760px; margin: 32px auto 0; }
+  .chip {
+    background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: var(--radius);
+    padding: 20px; text-align: center; font-family: var(--font-ui); font-weight: 500; color: var(--color-off-black);
+  }
+
+  .cta__inner { text-align: center; max-width: 620px; margin-inline: auto; }
+  .cta__inner h2 { margin-bottom: 14px; }
+  .cta__inner p { margin-bottom: 24px; }
+
+  @media (max-width: 900px) { .swatch-grid { grid-template-columns: repeat(3, 1fr); } .applied-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .swatch-grid { grid-template-columns: 1fr 1fr; } .applied-grid, .chars-grid { grid-template-columns: 1fr; } }
+</style>

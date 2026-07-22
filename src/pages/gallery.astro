@@ -1,0 +1,59 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { breadcrumbSchema } from '../lib/schema';
+import { galleryImage } from '../lib/cmsImages';
+import galleryData from '../data/gallery.json';
+import heroBg from '../assets/home/hero-2.png';
+
+type GalleryItem = { slug: string; title: string; img: string; category: string; content: string };
+const items = galleryData as GalleryItem[];
+
+// Preserve the live section order.
+const order = ['Our Manufacturer', 'Our Showroom', 'Selected Projects'];
+const blurbs: Record<string, string> = {
+  'Our Manufacturer': 'Local craftsmanship, modern living.',
+  'Our Showroom': 'Designed for living, built for confidence.',
+  'Selected Projects': 'Design, quality & local craft.',
+};
+const groups = order
+  .map((cat) => ({ cat, items: items.filter((i) => i.category === cat) }))
+  .filter((g) => g.items.length > 0);
+---
+<BaseLayout
+  title="Gallery | American Built Cabinets"
+  description="Inside American Built Cabinets — our San Jose manufacturing facility, showroom, and selected Bay Area projects. Locally built custom cabinetry."
+  schemaNodes={[breadcrumbSchema([{ name: 'Home', url: '/' }, { name: 'Gallery', url: '/gallery' }])]}
+>
+  <PageHero bg={heroBg} eyebrow="Designed for Everyday Living" title="Inspired Spaces" minHeight="60vh" />
+
+  {groups.map((g) => (
+    <section class="section gsec">
+      <div class="container">
+        <p class="eyebrow">{blurbs[g.cat]}</p>
+        <h2>{g.cat}</h2>
+        <div class="masonry">
+          {g.items.map((it) => {
+            const img = galleryImage(it.img);
+            return img ? (
+              <figure class="mfig">
+                <Image src={img} alt={it.title} widths={[400, 700]} sizes="(max-width: 700px) 100vw, 33vw" loading="lazy" />
+              </figure>
+            ) : null;
+          })}
+        </div>
+      </div>
+    </section>
+  ))}
+</BaseLayout>
+
+<style>
+  .gsec { padding-block: clamp(56px, 8vw, 96px); }
+  .gsec h2 { margin: 6px 0 28px; }
+  .masonry { columns: 3; column-gap: 16px; }
+  .mfig { margin: 0 0 16px; break-inside: avoid; border-radius: var(--radius); overflow: hidden; }
+  .mfig :global(img) { width: 100%; height: auto; display: block; }
+  @media (max-width: 900px) { .masonry { columns: 2; } }
+  @media (max-width: 560px) { .masonry { columns: 1; } }
+</style>
