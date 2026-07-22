@@ -1,0 +1,89 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { breadcrumbSchema, graph, organizationSchema } from '../../lib/schema';
+import { SITE } from '../../lib/site';
+import { SERVICE_DETAILS } from '../../lib/services';
+
+import heroBg from '../../assets/service/hero.jpg';
+import designImg from '../../assets/service/design.png';
+import mfgImg from '../../assets/service/manufacturing.jpg';
+import installImg from '../../assets/service/installation.png';
+import warrantyImg from '../../assets/service/warranty.png';
+
+const cards = [
+  { img: designImg, title: 'Design & Consultation', desc: 'Engineering-driven design support with expanded creative capabilities.', href: '/service/design-consultation' },
+  { img: mfgImg, title: 'Manufacturing', desc: 'Our 80k sq ft San Jose facility provides precision-controlled production.', href: '/service/manufacturing' },
+  { img: installImg, title: 'Installation', desc: 'Approved crews and on-site assistance, ensuring accurate fit and timely adjustments.', href: '/service/installation' },
+  { img: warrantyImg, title: 'Warranty & Support', desc: 'Local service infrastructure with long-term protection.', href: '/service/warranty-support' },
+];
+
+// Service schema per offering.
+const serviceNodes = SERVICE_DETAILS.map((s) => ({
+  '@type': 'Service',
+  name: s.title,
+  description: s.metaDescription,
+  url: `${SITE.url}/service/${s.slug}`,
+  provider: { '@id': `${SITE.url}/#organization` },
+  areaServed: SITE.areaServed.map((name) => ({ '@type': 'Place', name })),
+}));
+---
+<BaseLayout
+  title="Custom Cabinetry Services | American Built Cabinets"
+  description="End-to-end cabinetry for builders, developers, and homeowners — design & consultation, in-house manufacturing, installation, and warranty support across the Bay Area."
+  schemaNodes={[
+    breadcrumbSchema([{ name: 'Home', url: '/' }, { name: 'Service', url: '/service' }]),
+    ...serviceNodes,
+  ]}
+>
+  <PageHero bg={heroBg} eyebrow="American Built Cabinets" title="Service" />
+
+  <section class="section intro">
+    <div class="container intro__grid">
+      <h2>American Built Cabinets</h2>
+      <div class="intro__body">
+        <p>American Built Cabinets delivers a full suite of end-to-end cabinetry solutions designed for builders, developers, commercial partners, and homeowners.</p>
+        <p>With local manufacturing, engineered workflows, and predictable lead times, we support projects from early design through final installation — reducing risk, improving efficiency, and ensuring consistent delivery across varying project scales.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--muted svcs">
+    <div class="container">
+      <p class="eyebrow center">Integrated Solutions for Reliable, Scalable Project Delivery</p>
+      <h2 class="center">From first conversation to final install.</h2>
+      <div class="svcs__grid">
+        {cards.map((c) => (
+          <a href={c.href} class="svc">
+            <Image src={c.img} alt={c.title} class="svc__img" widths={[400, 640]} sizes="(max-width: 900px) 50vw, 25vw" />
+            <div class="svc__overlay"></div>
+            <div class="svc__body">
+              <h3>{c.title}</h3>
+              <p>{c.desc}</p>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .center { text-align: center; }
+  .intro__grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 56px; align-items: start; }
+  .intro__body p { font-size: 18px; }
+  .svcs__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-top: 40px; }
+  .svc { position: relative; aspect-ratio: 3 / 4; overflow: hidden; border-radius: var(--radius); display: block; color: #fff; }
+  .svc__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+  .svc:hover .svc__img { transform: scale(1.05); }
+  .svc__overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 35%, rgba(0,0,0,0.8) 100%); }
+  .svc__body { position: absolute; inset: auto 0 0 0; padding: 22px; }
+  .svc__body h3 { color: #fff; margin-bottom: 6px; }
+  .svc__body p { font-size: 13px; color: rgba(255,255,255,0.88); margin: 0; }
+  @media (max-width: 900px) {
+    .intro__grid { grid-template-columns: 1fr; gap: 20px; }
+    .svcs__grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) { .svcs__grid { grid-template-columns: 1fr; } }
+</style>

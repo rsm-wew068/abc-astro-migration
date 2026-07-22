@@ -1,0 +1,149 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { breadcrumbSchema } from '../lib/schema';
+import { SITE } from '../lib/site';
+
+import heroBg from '../assets/about/hero.jpg';
+import brandImg from '../assets/about/brand-history.png';
+import expImg from '../assets/home/svc-install.jpg';
+import card1 from '../assets/about/card-1.png';
+import card2 from '../assets/about/card-2.png';
+import card3 from '../assets/about/card-3.png';
+import card4 from '../assets/about/card-4.png';
+import card5 from '../assets/about/card-5.png';
+import card6 from '../assets/about/card-6.png';
+
+const stats = [
+  { value: '80', suffix: 'K+', label: 'sq ft Manufacturing Facility', desc: 'Scalable production capacity with CNC automation and centralized QA, ensuring consistent output for projects of any size.' },
+  { value: '5', suffix: 'K+', label: 'Clients Served', desc: 'Trusted by 5,000+ California clients, including homeowners, builders, and partners, delivering proven reliability and long-term performance.' },
+  { value: '3', suffix: 'WK', label: 'Lead Time', desc: 'Locally controlled workflows enable predictable 3-week lead times, reducing delays and supporting efficient project scheduling.' },
+  { value: '24', suffix: 'hr', label: 'Support Response', desc: 'A 24-hour support protocol ensures fast issue escalation, maintaining continuity across active job sites.' },
+];
+
+const standard = [
+  { img: card1, title: 'Material Selection', desc: 'Every cabinet begins with carefully selected materials. American Built Cabinets uses production-grade plywood and engineered panels chosen for strength, stability, and consistency, ensuring reliable performance across every project.' },
+  { img: card2, title: 'Precision Machining', desc: 'All cabinet components are CNC-machined for dimensional accuracy and repeatability. This precision ensures clean assembly, tight tolerances, and consistent results from single homes to multi-unit developments.' },
+  { img: card3, title: 'Construction Methods', desc: 'Our cabinets are constructed using proven frameless and framed systems designed for strength and longevity. Reinforced joints and controlled assembly processes deliver cabinets built to perform under daily use.' },
+  { img: card4, title: 'Structural Stability', desc: 'Cabinets are engineered to hold square and resist racking, with reinforced corners and panels that maintain structural integrity through years of daily use.' },
+  { img: card5, title: 'Load Performance', desc: 'Drawers and shelves are rated for real-world loads — full-extension slides and dovetail drawer boxes carry weight smoothly without sag or failure.' },
+  { img: card6, title: 'Closing Performance', desc: 'Soft-close hinges and slides are cycle-tested for quiet, consistent operation, delivering the same effortless close on day one and years later.' },
+];
+---
+<BaseLayout
+  title="About American Built Cabinets | San Jose, CA"
+  description="American Built Cabinets is a Silicon Valley-based custom cabinet manufacturer, building locally for Bay Area homeowners, builders, and designers with precision engineering and disciplined manufacturing."
+  schemaNodes={[breadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'About Us', url: '/about' },
+  ])]}
+>
+  <PageHero bg={heroBg} eyebrow="Crafted Locally for the Bay Area" title={`Built Local.\nDelivered Right.`} />
+
+  <!-- BRAND HISTORY -->
+  <section class="section brand">
+    <div class="container brand__grid">
+      <Image src={brandImg} alt="American Built Cabinets manufacturing facility in Silicon Valley" class="brand__img" widths={[500, 800]} sizes="(max-width: 900px) 100vw, 560px" />
+      <div>
+        <p class="eyebrow">Our Brand History</p>
+        <p class="brand__kicker">Who we are</p>
+        <h2>From humble roots to a global vision.</h2>
+        <p>American Built Cabinets was founded with a simple belief: cabinets should be built with the same precision, strength, and reliability as the homes they belong to.</p>
+        <p>Based in Silicon Valley, we are a locally owned manufacturer dedicated to engineering better cabinetry for modern living. While many companies rely on outsourced production, we maintain complete control over quality, materials, and craftsmanship.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE & PHILOSOPHY -->
+  <section class="section section--muted exp">
+    <div class="container exp__grid">
+      <Image src={expImg} alt="American Built Cabinets craftsman at the CNC line" class="exp__img" widths={[500, 800]} sizes="(max-width: 900px) 100vw, 520px" />
+      <div>
+        <p class="eyebrow">Experience and Results</p>
+        <h2>Details are everything.</h2>
+        <p>We work with builders, designers, and homeowners who expect more. More precision, more reliability, and more accountability. In high-end homes, details are not optional. They are everything.</p>
+        <p>At American Built Cabinets, we believe a kitchen is more than a place to cook. It is where families gather, where routines are built, and where everyday life happens.</p>
+        <p>That's why our work is guided by a clear philosophy:</p>
+        <p class="exp__creed">Research Drives Us.<br />Details Define Us.<br />Quality Proves Us.<br />Family Inspires Us.</p>
+        <p>Because when it's built right, it doesn't just look better—it lives better.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY CHOOSE US (shared stats band) -->
+  <section class="section section--dark stats">
+    <div class="container">
+      <p class="eyebrow eyebrow--center">Why Choose Us?</p>
+      <div class="stats__grid">
+        {stats.map((s) => (
+          <div class="stat">
+            <p class="stat__num"><span data-count={s.value}>0</span> {s.suffix}</p>
+            <h4 class="stat__label">{s.label}</h4>
+            <p class="stat__desc">{s.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- OUR STANDARD -->
+  <section class="section standard">
+    <div class="container">
+      <p class="eyebrow">Quality, Built with Purpose</p>
+      <h2>Our Standard</h2>
+      <div class="standard__intro">
+        <p>Quality is not defined by appearance alone. At American Built Cabinets, it is the result of precise engineering, disciplined manufacturing, and consistent execution.</p>
+        <p>Every cabinet built under this standard is designed to perform reliably, from custom homes to multi-unit projects, delivering durability, accuracy, and long-term value you can trust.</p>
+      </div>
+      <div class="standard__grid">
+        {standard.map((c) => (
+          <article class="scard">
+            <Image src={c.img} alt={c.title} class="scard__img" widths={[400, 600]} sizes="(max-width: 900px) 100vw, 33vw" />
+            <div class="scard__overlay"></div>
+            <div class="scard__body">
+              <h3>{c.title}</h3>
+              <p>{c.desc}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .eyebrow--center { text-align: center; display: block; margin-bottom: 40px; }
+  h2 { margin-bottom: 24px; }
+
+  .brand__grid, .exp__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+  .brand__img, .exp__img { width: 100%; border-radius: var(--radius); object-fit: cover; }
+  .brand__kicker { font-family: var(--font-ui); font-size: 14px; color: var(--color-body); margin: 8px 0 4px; }
+  .exp__creed { font-family: var(--font-heading); font-size: 22px; color: var(--color-off-black); line-height: 1.5; }
+
+  .stats__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+  .stat__num { font-family: var(--font-heading); font-size: 22px; color: var(--color-body-light); margin-bottom: 12px; }
+  .stat__num span { font-size: 64px; color: #fff; }
+  .stat__label { color: #fff; margin-bottom: 10px; }
+  .stat__desc { font-size: 14px; color: var(--color-body-light); }
+
+  .standard { text-align: center; }
+  .standard .eyebrow { display: block; }
+  .standard__intro { max-width: 760px; margin: 0 auto 48px; }
+  .standard__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .scard { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: var(--radius); color: #fff; text-align: left; }
+  .scard__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .scard__overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0.15) 20%, rgba(0,0,0,0.78) 100%); }
+  .scard__body { position: absolute; inset: auto 0 0 0; padding: 24px; }
+  .scard__body h3 { color: #fff; margin-bottom: 8px; }
+  .scard__body p { font-size: 13px; color: rgba(255,255,255,0.9); margin: 0; }
+
+  @media (max-width: 900px) {
+    .brand__grid, .exp__grid { grid-template-columns: 1fr; }
+    .stats__grid { grid-template-columns: 1fr 1fr; }
+    .standard__grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) {
+    .stats__grid, .standard__grid { grid-template-columns: 1fr; }
+  }
+</style>

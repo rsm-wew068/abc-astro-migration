@@ -1,0 +1,142 @@
+---
+import { SITE, NAV } from '../lib/site';
+const path = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === '/' ? path === '/' : path.startsWith(href);
+---
+<header class="nav">
+  <div class="container nav__inner">
+    <a href="/" class="nav__brand" aria-label={`${SITE.name} home`}>
+      <img src="/images/logo-wordmark.png" alt={SITE.name} width="150" height="41" />
+    </a>
+
+    <nav class="nav__links" aria-label="Primary">
+      {NAV.map((item) =>
+        item.children ? (
+          <div class="nav__group">
+            <a
+              href={item.href}
+              class:list={['nav__link', { 'is-active': isActive(item.href) || item.children.some((c) => isActive(c.href)) }]}
+              aria-haspopup="true"
+            >
+              {item.label}
+            </a>
+            <div class="nav__menu">
+              {item.children.map((c) => (
+                <a href={c.href} class:list={['nav__menu-link', { 'is-active': isActive(c.href) }]}>{c.label}</a>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <a
+            href={item.href}
+            class:list={['nav__link', { 'is-active': isActive(item.href) }]}
+            aria-current={isActive(item.href) ? 'page' : undefined}
+          >
+            {item.label}
+          </a>
+        ),
+      )}
+    </nav>
+
+    <button class="nav__burger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: saturate(180%) blur(10px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  }
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: 72px;
+  }
+  .nav__brand {
+    display: flex;
+    align-items: center;
+  }
+  .nav__brand img {
+    height: 40px;
+    width: auto;
+  }
+  .nav__links {
+    display: flex;
+    align-items: center;
+    gap: 26px;
+  }
+  .nav__link {
+    font-family: var(--font-ui);
+    font-size: 15px;
+    color: var(--color-off-black);
+    white-space: nowrap;
+  }
+  .nav__link:hover,
+  .nav__link.is-active {
+    color: var(--color-accent);
+  }
+
+  /* Events dropdown */
+  .nav__group { position: relative; }
+  .nav__menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(6px);
+    min-width: 190px;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    z-index: 60;
+  }
+  .nav__group:hover .nav__menu,
+  .nav__group:focus-within .nav__menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(2px);
+  }
+  .nav__menu-link {
+    font-family: var(--font-ui);
+    font-size: 14px;
+    color: var(--color-off-black);
+    padding: 10px 14px;
+    border-radius: 7px;
+    white-space: nowrap;
+  }
+  .nav__menu-link:hover,
+  .nav__menu-link.is-active { background: var(--color-off-white); color: var(--color-accent); }
+  .nav__burger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+  }
+  .nav__burger span {
+    width: 24px;
+    height: 2px;
+    background: var(--color-off-black);
+  }
+  @media (max-width: 960px) {
+    .nav__links { display: none; }
+    .nav__burger { display: flex; }
+  }
+</style>

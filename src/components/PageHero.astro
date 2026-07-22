@@ -1,0 +1,41 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+/**
+ * Full-bleed page hero: background photo, uppercase eyebrow, large serif title.
+ * Reused across /about, /service, /contact, etc. — matches the live design.
+ */
+interface Props {
+  bg: ImageMetadata;
+  eyebrow?: string;
+  title: string;
+  minHeight?: string;
+}
+const { bg, eyebrow, title, minHeight = '72vh' } = Astro.props;
+---
+<header class="phero" style={`min-height:${minHeight}`}>
+  <Image src={bg} alt="" class="phero__bg" loading="eager" widths={[960, 1440, 1920]} sizes="100vw" />
+  <div class="phero__overlay"></div>
+  <div class="container phero__inner">
+    {eyebrow && <p class="phero__eyebrow">{eyebrow}</p>}
+    <h1 set:html={title.replace(/\n/g, '<br />')} />
+  </div>
+</header>
+
+<style>
+  /* Dark backdrop prevents a gray flash before the hero image decodes. */
+  .phero { position: relative; display: flex; align-items: center; overflow: hidden; background: var(--color-off-black); }
+  .phero__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .phero__overlay { position: absolute; inset: 0; background: rgba(20, 20, 22, 0.5); }
+  .phero__inner { position: relative; text-align: center; color: #fff; }
+  .phero__eyebrow {
+    font-family: var(--font-ui);
+    text-transform: uppercase;
+    letter-spacing: 0.24em;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 18px;
+  }
+  .phero h1 { color: #fff; margin: 0; font-size: clamp(48px, 8vw, 104px); line-height: 1.05; }
+</style>

@@ -1,0 +1,50 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import EventCard from '../../components/EventCard.astro';
+import { breadcrumbSchema } from '../../lib/schema';
+import { UPCOMING, PAST } from '../../lib/events';
+import heroBg from '../../assets/home/hero-2.png';
+---
+<BaseLayout
+  title="Events | American Built Cabinets"
+  description="Events, sponsorships, and trade shows from American Built Cabinets across the Bay Area — from community sponsorships to industry summits."
+  schemaNodes={[breadcrumbSchema([{ name: 'Home', url: '/' }, { name: 'Events', url: '/events' }])]}
+>
+  <PageHero bg={heroBg} eyebrow="What We're Up To" title="Events" minHeight="54vh" />
+
+  <section class="section">
+    <div class="container">
+      {UPCOMING.length > 0 && (
+        <div class="evgroup">
+          <div class="evgroup__head">
+            <h2>Upcoming Events</h2>
+            <a href="/upcoming-events" class="evgroup__link">View all &rarr;</a>
+          </div>
+          <div class="evgrid">
+            {UPCOMING.map((e) => <EventCard event={e} />)}
+          </div>
+        </div>
+      )}
+
+      <div class="evgroup">
+        <div class="evgroup__head">
+          <h2>Past Events</h2>
+          <a href="/past-events" class="evgroup__link">View all &rarr;</a>
+        </div>
+        <div class="evgrid">
+          {PAST.map((e) => <EventCard event={e} />)}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .evgroup { margin-bottom: 64px; }
+  .evgroup__head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 28px; }
+  .evgroup__link { font-family: var(--font-ui); font-size: 15px; }
+  .evgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+  @media (max-width: 900px) { .evgrid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .evgrid { grid-template-columns: 1fr; } }
+</style>

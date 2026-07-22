@@ -1,0 +1,100 @@
+---
+import { Image } from 'astro:assets';
+import { SITE } from '../lib/site';
+import { LATEST_EVENTS, formatDate } from '../lib/events';
+import { eventImage } from '../lib/eventImages';
+
+import brandBg from '../assets/home/hero-2.png';
+
+/**
+ * Home hero carousel — reproduces the live rotating hero: a brand slide plus
+ * the latest event slides pulled live from the events collection (CMS-connected,
+ * like the original). Adding/editing an event updates this hero on next build.
+ */
+const events = LATEST_EVENTS;
+const dotCount = events.length + 1;
+---
+<section class="hc" data-hero-carousel aria-roledescription="carousel">
+  <!-- Slide 1 — brand -->
+  <div class="hc__slide is-active" data-slide>
+    <Image src={brandBg} alt="" class="hc__bg" loading="eager" widths={[960, 1440, 1920]} sizes="100vw" />
+    <div class="hc__overlay"></div>
+    <div class="container hc__inner hc__brand">
+      <p class="hc__eyebrow">Proudly Made From The USA</p>
+      <img src="/images/logo-wordmark.png" alt={SITE.name} class="hc__wordmark" />
+      <p class="hc__tagline">Built Stronger. Built Smarter. Built Local.</p>
+      <div class="hc__cta">
+        <a href="/about" class="btn">About Us</a>
+        <a href="/contact" class="btn btn--ghost">Start Building With Us</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Event slides (from the events collection) -->
+  {events.map((e) => (
+    <div class="hc__slide" data-slide>
+      <Image src={eventImage(e.thumb)!} alt="" class="hc__bg" widths={[960, 1440, 1920]} sizes="100vw" loading="lazy" />
+      <div class="hc__overlay"></div>
+      <div class="container hc__inner hc__event">
+        <p class="hc__eyebrow">Latest Event</p>
+        <h2 class="hc__title">{e.title}</h2>
+        <p class="hc__date">{formatDate(e.date)}</p>
+        <a href={`/events/${e.slug}`} class="btn">View Event</a>
+      </div>
+    </div>
+  ))}
+
+  <div class="hc__dots" role="tablist">
+    {Array.from({ length: dotCount }, (_, i) => (
+      <button class:list={['hc__dot', { 'is-active': i === 0 }]} data-dot={i} aria-label={`Go to slide ${i + 1}`}></button>
+    ))}
+  </div>
+</section>
+
+<style>
+  .hc { position: relative; min-height: 88vh; overflow: hidden; background: var(--color-off-black); }
+  .hc__slide {
+    position: absolute; inset: 0; display: flex; align-items: center;
+    opacity: 0; visibility: hidden; transition: opacity 0.9s ease;
+  }
+  .hc__slide.is-active { opacity: 1; visibility: visible; }
+  .hc__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hc__overlay { position: absolute; inset: 0; background: rgba(20, 20, 22, 0.5); }
+  .hc__inner { position: relative; text-align: center; color: #fff; width: 100%; }
+
+  .hc__eyebrow { font-family: var(--font-ui); text-transform: uppercase; letter-spacing: 0.28em; font-size: 13px; color: rgba(255,255,255,0.85); margin-bottom: 20px; }
+  .hc__wordmark { width: min(560px, 80vw); margin: 0 auto 24px; filter: brightness(0) invert(1); }
+  .hc__tagline { font-family: var(--font-heading); font-size: clamp(24px, 3.4vw, 40px); color: #fff; margin-bottom: 32px; }
+  .hc__cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .btn--ghost { background: transparent; border: 1px solid rgba(255,255,255,0.7); }
+  .btn--ghost:hover { background: rgba(255,255,255,0.12); color: #fff; }
+
+  .hc__event { max-width: 900px; margin-inline: auto; }
+  .hc__title { color: #fff; font-size: clamp(30px, 4.4vw, 56px); margin-bottom: 16px; }
+  .hc__date { font-family: var(--font-ui); font-size: 16px; color: rgba(255,255,255,0.9); margin-bottom: 28px; }
+
+  .hc__dots { position: absolute; bottom: 32px; left: 0; right: 0; display: flex; gap: 12px; justify-content: center; z-index: 3; }
+  .hc__dot { width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid #fff; background: transparent; cursor: pointer; padding: 0; transition: background 0.2s; }
+  .hc__dot.is-active { background: #fff; }
+</style>
+
+<script>
+  const root = document.querySelector('[data-hero-carousel]');
+  if (root) {
+    const slides = [...root.querySelectorAll('[data-slide]')];
+    const dots = [...root.querySelectorAll('[data-dot]')];
+    let i = 0;
+    let timer: number | undefined;
+    const go = (n: number) => {
+      slides[i].classList.remove('is-active');
+      dots[i].classList.remove('is-active');
+      i = (n + slides.length) % slides.length;
+      slides[i].classList.add('is-active');
+      dots[i].classList.add('is-active');
+    };
+    const start = () => { timer = window.setInterval(() => go(i + 1), 6000); };
+    const stop = () => { if (timer) window.clearInterval(timer); };
+    dots.forEach((d, n) => d.addEventListener('click', () => { stop(); go(n); start(); }));
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) start();
+  }
+</script>

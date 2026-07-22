@@ -1,0 +1,234 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HeroCarousel from '../components/HeroCarousel.astro';
+import { localBusinessSchema } from '../lib/schema';
+import { SITE } from '../lib/site';
+
+import aboutImg from '../assets/home/about.png';
+import svcDesign from '../assets/home/svc-design.png';
+import svcMfg from '../assets/home/svc-mfg.png';
+import svcInstall from '../assets/home/svc-install.jpg';
+import svcWarranty from '../assets/home/svc-warranty.png';
+
+const stats = [
+  { value: '80', suffix: 'K+', label: 'sq ft Manufacturing Facility', desc: 'Scalable production capacity with CNC automation and centralized QA, ensuring consistent output for projects of any size.' },
+  { value: '5', suffix: 'K+', label: 'Clients Served', desc: 'Trusted by 5,000+ California clients, including homeowners, builders, and partners, delivering proven reliability and long-term performance.' },
+  { value: '3', suffix: 'WK', label: 'Lead Time', desc: 'Locally controlled workflows enable predictable 3-week lead times, reducing delays and supporting efficient project scheduling.' },
+  { value: '24', suffix: 'hr', label: 'Support Response', desc: 'A 24-hour support protocol ensures fast issue escalation, maintaining continuity across active job sites.' },
+];
+
+const services = [
+  { img: svcDesign, label: 'Design & Consultation', href: '/service/design-consultation', desc: 'Collaborative planning and layout guidance to shape every project.' },
+  { img: svcMfg, label: 'Manufacturing', href: '/service/manufacturing', desc: 'Precision-controlled local production with rigorous quality control.' },
+  { img: svcInstall, label: 'Installation', href: '/service/installation', desc: 'Responsive on-site coordination ensuring accurate, timely fit.' },
+  { img: svcWarranty, label: 'Warranty & Support', href: '/service/warranty-support', desc: 'Long-term warranty and ongoing support after installation.' },
+];
+
+const reviews = [
+  '"We had a great experience working with ABC Cabinet. From the first consultation to final installation, everything felt organized and smooth. Knowing they manufacture locally in San Jose gave us real peace of mind. Cabinets arrived on time, and any follow-up questions were handled quickly. Highly recommend."',
+  '"If you are looking for fully custom cabinets, this is the place! The experience here was seemless. We needed the cabinets to fit our timeline. We had about a month of room, but they were able to get them to us in three weeks. The turnaround times were always quick,…"',
+  '"We recently hired this company for our kitchen remodel, and we couldn\'t be happier with the results. From the initial consultation to the final walkthrough, the entire process was smooth and well-organized. They helped us with layout suggestions, materials, and finishes, and really took the time to understand what we…"',
+  '"Great experience with ABC Cabinet. We did a full kitchen (20\'×16\') and a closet, and everything went smoothly. Timeline was accurate (about 3.5 weeks), and they were very nice and responsive the whole time. Any small issues were handled quickly. Solid work and easy to deal with, I would recommend…"',
+];
+
+const press = [
+  { src: '/images/press/luxe.png', alt: 'LUXE Interiors + Design' },
+  { src: '/images/press/mercury-news.jpg', alt: 'The Mercury News' },
+  { src: '/images/press/all-india-radio.png', alt: 'All India Radio' },
+  { src: '/images/press/world-journal.jpeg', alt: 'World Journal' },
+  { src: '/images/press/sing-tao.png', alt: 'Sing Tao Daily' },
+];
+
+const partners = [
+  { src: '/images/partners/lennar.png', alt: 'Lennar Homes' },
+  { src: '/images/partners/hd-supply.png', alt: 'Home Depot Supply' },
+  { src: '/images/partners/veev.png', alt: 'Veev Home, by Lennar' },
+  { src: '/images/partners/uc-davis.png', alt: 'UC Davis Health' },
+  { src: '/images/partners/ferguson.png', alt: 'Ferguson' },
+];
+---
+<BaseLayout
+  title={`San Jose Custom Cabinets | ${SITE.name}`}
+  description={SITE.description}
+  schemaNodes={[localBusinessSchema()]}
+>
+  <!-- HERO CAROUSEL (brand + latest events) -->
+  <HeroCarousel />
+
+  <!-- ABOUT -->
+  <section class="section about">
+    <div class="container about__grid">
+      <div class="about__text">
+        <h2>American Built Cabinets</h2>
+        <p>San Jose-based American Built Cabinets manufactures premium custom cabinetry and integrated material solutions for residential and commercial projects across the Bay Area, combining local production, modern craftsmanship, and reliable quality.</p>
+        <a href="/about" class="btn">About American Built Cabinets</a>
+      </div>
+      <Image src={aboutImg} alt="American Built Cabinets craftsman at work in the San Jose facility" class="about__img" widths={[500, 800]} sizes="(max-width: 900px) 100vw, 600px" />
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="section section--dark stats">
+    <div class="container">
+      <p class="eyebrow eyebrow--center">Why Choose American Built Cabinets?</p>
+      <div class="stats__grid">
+        {stats.map((s) => (
+          <div class="stat">
+            <p class="stat__num"><span data-count={s.value}>0</span> {s.suffix}</p>
+            <h4 class="stat__label">{s.label}</h4>
+            <p class="stat__desc">{s.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="section services">
+    <div class="container">
+      <h2 class="center">Innovating the way of living.</h2>
+      <p class="services__sub">American Built Cabinets deliver end-to-end design &amp; consultation, manufacturing &amp; logistics, warranty &amp; support.</p>
+    </div>
+    <div class="services__row">
+      {services.map((s) => (
+        <a href={s.href} class="svc">
+          <Image src={s.img} alt={s.label} class="svc__img" widths={[400, 600]} sizes="(max-width: 900px) 50vw, 25vw" />
+          <div class="svc__overlay"></div>
+          <div class="svc__body">
+            <h3>{s.label}</h3>
+            <p>{s.desc}</p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section section--muted reviews">
+    <div class="container">
+      <h2 class="center">We love hearing from you.</h2>
+      <p class="center reviews__sub">Reviews from American Built Cabinets customers.</p>
+    </div>
+    <div class="reviews__marquee">
+      <div class="reviews__track">
+        {[...reviews, ...reviews].map((r) => (
+          <blockquote class="review">
+            <div class="review__stars" aria-label="5 out of 5 stars">★★★★★</div>
+            <p>{r}</p>
+          </blockquote>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- PRESS -->
+  <section class="section press">
+    <div class="container">
+      <h2 class="center">We can be seen here.</h2>
+      <p class="center press__sub">American Built Cabinets has been featured in The Mercury News, LUXE, World Journal, and Sing Tao Daily.</p>
+      <div class="logo-row">
+        {press.map((l) => <img src={l.src} alt={l.alt} loading="lazy" />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTNERS -->
+  <section class="section section--muted partners">
+    <div class="container">
+      <h2 class="center">We are your trusted partner in custom cabinetry.</h2>
+      <div class="logo-row">
+        {partners.map((l) => (
+          <figure class="partner">
+            <img src={l.src} alt={l.alt} loading="lazy" />
+            <figcaption>{l.alt}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- TOUR CTA -->
+  <section class="tour">
+    <Image src={svcMfg} alt="" class="tour__bg" widths={[960, 1440]} sizes="100vw" />
+    <div class="tour__overlay"></div>
+    <div class="container tour__inner">
+      <a href="/contact" class="btn">Book a manufacturing tour today</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .center { text-align: center; }
+  .eyebrow--center { text-align: center; display: block; margin-bottom: 40px; }
+
+  /* HERO */
+  .hero { position: relative; min-height: 88vh; display: flex; align-items: center; overflow: hidden; }
+  .hero__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hero__overlay { position: absolute; inset: 0; background: rgba(20, 20, 22, 0.5); }
+  .hero__inner { position: relative; text-align: center; color: #fff; }
+  .hero__eyebrow { font-family: var(--font-ui); text-transform: uppercase; letter-spacing: 0.28em; font-size: 13px; color: rgba(255,255,255,0.85); margin-bottom: 20px; }
+  .hero__wordmark { width: min(560px, 80vw); margin: 0 auto 24px; filter: brightness(0) invert(1); }
+  .hero__tagline { font-family: var(--font-heading); font-size: clamp(24px, 3.4vw, 40px); color: #fff; margin-bottom: 32px; }
+  .hero__cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .btn--ghost { background: transparent; border: 1px solid rgba(255,255,255,0.7); }
+  .btn--ghost:hover { background: rgba(255,255,255,0.12); }
+
+  /* ABOUT */
+  .about__grid { display: grid; grid-template-columns: 1fr 1.15fr; gap: 56px; align-items: center; }
+  .about__text p { font-size: 18px; margin: 20px 0 28px; }
+  .about__img { width: 100%; border-radius: var(--radius); object-fit: cover; }
+
+  /* STATS */
+  .stats__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+  .stat__num { font-family: var(--font-heading); font-size: 22px; color: var(--color-body-light); margin-bottom: 12px; }
+  .stat__num span { font-size: 64px; color: #fff; }
+  .stat__label { color: #fff; margin-bottom: 10px; }
+  .stat__desc { font-size: 14px; color: var(--color-body-light); }
+
+  /* SERVICES */
+  .services__sub { text-align: center; text-transform: uppercase; letter-spacing: 0.08em; color: var(--color-body); max-width: 760px; margin: 12px auto 0; }
+  .services__row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; margin-top: 48px; }
+  .svc { position: relative; aspect-ratio: 3 / 4; overflow: hidden; display: block; color: #fff; }
+  .svc__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+  .svc:hover .svc__img { transform: scale(1.05); }
+  .svc__overlay { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.75) 100%); }
+  .svc__body { position: absolute; inset: auto 0 0 0; padding: 24px; }
+  .svc__body h3 { color: #fff; margin-bottom: 6px; }
+  .svc__body p { font-size: 13px; color: rgba(255,255,255,0.85); margin: 0; }
+
+  /* REVIEWS */
+  .reviews__sub { text-transform: uppercase; letter-spacing: 0.08em; font-size: 14px; margin-bottom: 40px; }
+  /* Continuous auto-scrolling marquee, matching the live .rv-track ticker. */
+  .reviews__marquee { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+  .reviews__track { display: flex; gap: 24px; width: max-content; animation: rvmarq 70s linear infinite; }
+  .reviews__marquee:hover .reviews__track { animation-play-state: paused; }
+  @keyframes rvmarq { from { transform: translateX(0); } to { transform: translateX(calc(-50% - 12px)); } }
+  @media (prefers-reduced-motion: reduce) { .reviews__track { animation: none; flex-wrap: wrap; justify-content: center; } }
+  .review { flex: 0 0 380px; background: #fff; border-radius: var(--radius); padding: 28px; margin: 0; box-shadow: 0 8px 24px rgba(0,0,0,0.05); }
+  .review__stars { color: #e6b325; letter-spacing: 2px; margin-bottom: 16px; }
+  .review p { font-size: 15px; color: var(--color-body); margin: 0; }
+
+  /* PRESS + PARTNERS */
+  .logo-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 56px; margin-top: 44px; }
+  .press__sub { max-width: 720px; margin: 12px auto 0; color: var(--color-body); }
+  .logo-row img { max-height: 64px; width: auto; object-fit: contain; }
+  .partner { margin: 0; text-align: center; }
+  .partner figcaption { font-family: var(--font-ui); font-size: 13px; color: var(--color-body); margin-top: 10px; }
+
+  /* TOUR */
+  .tour { position: relative; min-height: 340px; display: flex; align-items: center; overflow: hidden; }
+  .tour__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .tour__overlay { position: absolute; inset: 0; background: rgba(20,20,22,0.55); }
+  .tour__inner { position: relative; text-align: center; }
+
+  @media (max-width: 900px) {
+    .about__grid { grid-template-columns: 1fr; }
+    .stats__grid { grid-template-columns: 1fr 1fr; }
+    .services__row { grid-template-columns: 1fr 1fr; }
+    .reviews__grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) {
+    .stats__grid, .services__row, .reviews__grid { grid-template-columns: 1fr; }
+  }
+</style>

@@ -1,0 +1,133 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { breadcrumbSchema, faqSchema } from '../lib/schema';
+import heroBg from '../assets/home/hero-2.png';
+
+const categories = [
+  {
+    name: 'General',
+    items: [
+      { q: 'What does American Built Cabinets specialize in?', a: 'American Built Cabinets specializes in precision custom cabinetry and integrated material solutions, serving residential and commercial projects with locally manufactured, American-built cabinet systems.' },
+      { q: 'Where is American Built Cabinets located?', a: 'American Built Cabinets is based in San Jose, California, operating a local manufacturing facility serving the Bay Area and surrounding regions.' },
+      { q: 'Which cities and areas do you serve?', a: 'American Built Cabinets is based in San Jose and serves homeowners, builders, and designers across Silicon Valley and the greater Bay Area, including Sunnyvale, Santa Clara, Mountain View, Cupertino, Palo Alto, Los Altos, Milpitas, Fremont, Newark, and surrounding communities.' },
+    ],
+  },
+  {
+    name: 'Manufacturing & Capability',
+    items: [
+      { q: 'What is the size of your manufacturing facility?', a: 'Our production facility spans approximately 80,000 square feet and is designed to support both custom and large-volume manufacturing.' },
+      { q: 'Can you handle large-volume or multi-unit projects?', a: 'Yes. Our scalable production capacity and controlled workflows support multi-unit residential developments and large-volume commercial projects.' },
+      { q: 'What materials do you use to build your cabinets?', a: 'Production-grade plywood and engineered panels, CNC-machined for precise, repeatable results, and finished with durable coatings engineered for long-term residential and commercial use.' },
+    ],
+  },
+  {
+    name: 'Design & Customization',
+    items: [
+      { q: 'Do you offer custom cabinetry or semi-custom options?', a: 'We focus on fully custom cabinetry solutions tailored to project requirements, layouts, finishes, and performance needs.' },
+      { q: 'Can you work with external designers or architects?', a: 'Absolutely. We collaborate closely with external designers, architects, and builders to ensure designs align with manufacturing and installation requirements.' },
+      { q: 'Do your cabinets include soft-close hinges and drawers?', a: 'Yes. Soft-close hinges and drawer slides come standard, reducing wear and adding quiet, premium operation to every door and drawer.' },
+      { q: 'Do you have an in-house design team?', a: 'Yes. Our in-house design team provides shop drawings, finish coordination, measurement review, and production-ready documentation.' },
+      { q: 'Do you offer both frameless and framed cabinet styles?', a: 'Yes. We build both frameless (full-overlay, modern) and framed cabinetry, with consistent precision across door styles, finishes, and hardware so the construction method matches your design intent.' },
+    ],
+  },
+  {
+    name: 'Lead Time & Delivery',
+    items: [
+      { q: 'What is your standard lead time?', a: 'Our standard manufacturing lead time is approximately three weeks for most projects, depending on scope and specifications.' },
+      { q: 'Do you coordinate delivery schedules with job sites?', a: 'Yes. We work with GCs and project teams to coordinate delivery timing and logistics to support smooth jobsite operations.' },
+      { q: 'Can lead times be adjusted for larger or phased projects?', a: 'Yes. For large-scale or phased developments, we coordinate production schedules to align with construction timelines and project sequencing.' },
+      { q: 'What sets American Built Cabinets apart from other Bay Area cabinet makers?', a: 'Three things: locally controlled manufacturing in our 80,000 sq ft San Jose facility, a predictable 3-week average lead time, and centralized quality assurance — combining large-manufacturer scale with local responsiveness.' },
+    ],
+  },
+  {
+    name: 'Installation',
+    items: [
+      { q: 'Do you provide installation services?', a: 'We provide installation support and coordination through approved and experienced installation partners.' },
+      { q: 'Can you support installation coordination for GC-led projects?', a: 'Yes. We support GC-led projects with delivery coordination, field communication, and installation assistance as needed.' },
+      { q: 'Do you work with approved or partner installers?', a: 'Yes. We collaborate with approved installation crews familiar with our cabinetry systems and project requirements.' },
+    ],
+  },
+  {
+    name: 'Warranty & Support',
+    items: [
+      { q: 'What type of warranty do you offer?', a: 'We offer a Limited Lifetime Warranty on manufacturer defects for our cabinetry products.' },
+      { q: 'How quickly does your team respond to support requests?', a: 'Our support team follows a 24-hour response protocol to ensure timely issue escalation and resolution.' },
+      { q: 'What does the Limited Lifetime Warranty cover?', a: 'The warranty covers manufacturer defects related to materials and workmanship under normal residential use.' },
+      { q: 'How should I clean and maintain my cabinets?', a: 'Wipe surfaces with a soft, damp cloth and mild soap; avoid abrasive cleaners, excess moisture, and prolonged direct heat or sunlight. With routine care, our cabinets maintain their finish and function for years.' },
+    ],
+  },
+  {
+    name: 'Getting Started',
+    items: [
+      { q: 'How do I start a project with American Built Cabinets?', a: 'Contact our team to discuss project scope, timelines, and design requirements.' },
+      { q: 'Who should I contact for project inquiries?', a: 'Reach out to our sales or project support team through the website contact form or by phone for all project inquiries.' },
+      { q: 'What information is needed to request a quote?', a: 'Typically, we request drawings, measurements, desired finishes, project location, and target timelines to prepare an accurate quote.' },
+      { q: 'How much do custom kitchen cabinets cost?', a: 'Pricing depends on materials, finishes, door style, hardware, and scope. We provide detailed quotes after reviewing plans and selections.' },
+    ],
+  },
+];
+
+const allFaqs = categories.flatMap((c) => c.items).map((i) => ({ question: i.q, answer: i.a }));
+---
+<BaseLayout
+  title="Cabinetry FAQ | American Built Cabinets"
+  description="Answers on custom cabinetry, lead times, materials, installation, and warranty from American Built Cabinets — a San Jose manufacturer serving the Bay Area."
+  schemaNodes={[
+    breadcrumbSchema([{ name: 'Home', url: '/' }, { name: 'FAQ', url: '/faq' }]),
+    faqSchema(allFaqs),
+  ]}
+>
+  <PageHero bg={heroBg} eyebrow="Answers to Common Questions" title="FAQ" minHeight="52vh" />
+
+  <section class="section faq">
+    <div class="container faq__wrap">
+      {categories.map((cat) => (
+        <div class="faq__cat">
+          <h2>{cat.name}</h2>
+          <div class="faq__list">
+            {cat.items.map((item) => (
+              <details class="faq__item">
+                <summary>{item.q}</summary>
+                <p>{item.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .faq__wrap { max-width: 820px; }
+  .faq__cat { margin-bottom: 48px; }
+  .faq__cat h2 { font-size: clamp(24px, 3vw, 32px); margin-bottom: 16px; }
+  .faq__item {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 4px 0;
+  }
+  .faq__item:last-child { border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
+  .faq__item summary {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--color-off-black);
+    padding: 18px 32px 18px 0;
+    cursor: pointer;
+    position: relative;
+    list-style: none;
+  }
+  .faq__item summary::-webkit-details-marker { display: none; }
+  .faq__item summary::after {
+    content: '+';
+    position: absolute;
+    right: 0; top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    color: var(--color-accent);
+    font-weight: 300;
+  }
+  .faq__item[open] summary::after { content: '−'; }
+  .faq__item p { margin: 0 0 20px; color: var(--color-body); }
+</style>

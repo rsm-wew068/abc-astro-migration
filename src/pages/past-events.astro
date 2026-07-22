@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import EventCard from '../components/EventCard.astro';
+import { breadcrumbSchema } from '../lib/schema';
+import { PAST } from '../lib/events';
+import heroBg from '../assets/home/hero-2.png';
+---
+<BaseLayout
+  title="Past Events | American Built Cabinets"
+  description="A look back at events, sponsorships, and trade shows American Built Cabinets has taken part in across the Bay Area."
+  schemaNodes={[breadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Events', url: '/events' },
+    { name: 'Past Events', url: '/past-events' },
+  ])]}
+>
+  <PageHero bg={heroBg} eyebrow="A Look Back" title="Past Events" minHeight="54vh" />
+
+  <section class="section">
+    <div class="container">
+      <div class="evgrid">
+        {PAST.map((e) => <EventCard event={e} />)}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .evgrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+  @media (max-width: 900px) { .evgrid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .evgrid { grid-template-columns: 1fr; } }
+</style>

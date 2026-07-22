@@ -1,0 +1,132 @@
+---
+import '../styles/global.css';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import JsonLd from '../components/JsonLd.astro';
+import { SITE } from '../lib/site';
+import { organizationSchema, websiteSchema, graph } from '../lib/schema';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Absolute or root-relative OG image path. */
+  image?: string;
+  /** Extra JSON-LD nodes (Article, FAQPage, LocalBusiness, …) for this page. */
+  schemaNodes?: object[];
+  /** Set true on staging deploys to keep the page out of the index (§10). */
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = SITE.description,
+  image,
+  schemaNodes = [],
+  noindex = false,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, SITE.url).href;
+const ogImage = image ? new URL(image, SITE.url).href : undefined;
+
+// Site-wide nodes on every page + any page-specific nodes, in one @graph.
+const jsonLd = graph(organizationSchema(), websiteSchema(), ...schemaNodes);
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Italiana&family=Raleway:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <JsonLd schema={jsonLd} />
+    <slot name="head" />
+  </head>
+  <body>
+    <Navbar />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      // Framer-style scroll reveal + count-up stats. Progressive: no JS = all visible.
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const html = document.documentElement;
+
+      // Scroll reveal for content sections (heroes stay put).
+      if (!reduce) {
+        html.classList.add('reveal-ready');
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                e.target.classList.add('is-visible');
+                io.unobserve(e.target);
+              }
+            }
+          },
+          { threshold: 0.12, rootMargin: '0px 0px -8% 0px' },
+        );
+        const heroSel = '.hero, .phero, .bhero';
+        for (const s of document.querySelectorAll('main section')) {
+          if (s.matches(heroSel) || s.closest(heroSel)) continue;
+          s.setAttribute('data-reveal', '');
+          // Anything already in view reveals immediately (no flash-in).
+          if (s.getBoundingClientRect().top < window.innerHeight * 0.92) {
+            s.classList.add('is-visible');
+          }
+          io.observe(s);
+        }
+      }
+
+      // Count-up animation for [data-count] numbers.
+      const counters = document.querySelectorAll('[data-count]');
+      if (counters.length) {
+        const cio = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (!e.isIntersecting) continue;
+              const el = e.target as HTMLElement;
+              const target = Number(el.dataset.count || '0');
+              if (reduce) {
+                el.textContent = String(target);
+              } else {
+                const dur = 1400;
+                const start = performance.now();
+                const step = (now: number) => {
+                  const p = Math.min((now - start) / dur, 1);
+                  el.textContent = String(Math.round(target * (1 - Math.pow(1 - p, 3))));
+                  if (p < 1) requestAnimationFrame(step);
+                };
+                requestAnimationFrame(step);
+              }
+              cio.unobserve(el);
+            }
+          },
+          { threshold: 0.6 },
+        );
+        counters.forEach((c) => cio.observe(c));
+      }
+    </script>
+  </body>
+</html>

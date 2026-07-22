@@ -1,0 +1,154 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { localBusinessSchema } from '../lib/schema';
+import { SITE } from '../lib/site';
+
+import heroBg from '../assets/contact/hero.png';
+import tomImg from '../assets/contact/tom.jpg';
+import scarlettImg from '../assets/contact/scarlett.jpg';
+import brightonImg from '../assets/contact/brighton.jpg';
+import tourImg from '../assets/contact/tour.png';
+
+const team = [
+  { img: tomImg, name: 'Tom Weng', role: 'General Manager', phone: '669-298-1888', email: 'ihuan@miltechs.us' },
+  { img: scarlettImg, name: 'Scarlett H', role: 'Business Development Director', phone: '612-224-4433', email: 'scarlett.h@abcabinet.us' },
+  { img: brightonImg, name: 'Brighton Peake', role: 'Marketing Manager', phone: '650-698-3333', email: 'brighton.peake@abcabinet.shop' },
+];
+---
+<BaseLayout
+  title="Contact | American Built Cabinets"
+  description="Tell us about your project. Reach the American Built Cabinets team in San Jose — or book a manufacturing tour of our 80,000 sq ft Bay Area facility."
+  schemaNodes={[localBusinessSchema()]}
+>
+  <PageHero bg={heroBg} eyebrow="Tell Us About Your Project" title="Let's Build Together" minHeight="62vh" />
+
+  <!-- INQUIRY FORM -->
+  <section class="section form-sec">
+    <div class="container form-wrap">
+      <div class="form-intro">
+        <p class="eyebrow">Start a conversation</p>
+        <h2>Tell us about your project.</h2>
+        <p>Share a few details and the right person on our team will follow up. For builders and developers, include your project scale and timeline.</p>
+        <ul class="form-nap">
+          <li><a href={`tel:${SITE.telephone}`}>{SITE.telephoneDisplay}</a></li>
+          <li><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+          <li>{SITE.address.street}, {SITE.address.city}, {SITE.address.region}</li>
+        </ul>
+      </div>
+
+      <form class="cform" method="POST" action="/api/contact">
+        <div class="cform__row">
+          <label>Name<input type="text" name="name" required autocomplete="name" /></label>
+          <label>Email<input type="email" name="email" required autocomplete="email" /></label>
+        </div>
+        <div class="cform__row">
+          <label>Phone<input type="tel" name="phone" autocomplete="tel" /></label>
+          <label>Company<input type="text" name="company" autocomplete="organization" /></label>
+        </div>
+        <div class="cform__row">
+          <label>Project site / city<input type="text" name="site" /></label>
+          <label>I'm interested in
+            <select name="interest">
+              <option>Custom kitchen / home</option>
+              <option>Builder / multi-unit project</option>
+              <option>Design consultation</option>
+              <option>Trade program</option>
+              <option>Other</option>
+            </select>
+          </label>
+        </div>
+        <label class="cform__full">Project details<textarea name="message" rows="5" required></textarea></label>
+        <!-- honeypot -->
+        <input type="text" name="website" tabindex="-1" autocomplete="off" class="cform__hp" aria-hidden="true" />
+        <button type="submit" class="btn">Send message</button>
+        <p class="cform__status" data-status hidden></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section class="section section--muted team-sec">
+    <div class="container">
+      <p class="eyebrow center">Reach Out to Our Team Today</p>
+      <div class="team-grid">
+        {team.map((m) => (
+          <div class="tcard">
+            <Image src={m.img} alt={m.name} class="tcard__img" widths={[280, 360]} sizes="300px" />
+            <h3>{m.name}</h3>
+            <p class="tcard__role">{m.role}</p>
+            <p class="tcard__c"><a href={`tel:${m.phone.replace(/[^0-9]/g, '')}`}>{m.phone}</a></p>
+            <p class="tcard__c"><a href={`mailto:${m.email}`}>{m.email}</a></p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- TOUR CTA -->
+  <section class="section tour">
+    <div class="container tour__grid">
+      <div>
+        <h2>Book a manufacturing tour today</h2>
+        <p>See where your cabinetry is made. Tour our 80,000 sq ft San Jose facility and meet the team behind the work.</p>
+        <a href={`mailto:${SITE.email}?subject=Manufacturing%20tour`} class="btn">Request a tour</a>
+      </div>
+      <Image src={tourImg} alt="American Built Cabinets manufacturing facility" class="tour__img" widths={[500, 800]} sizes="(max-width: 900px) 100vw, 560px" />
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // Progressive enhancement: submit without a full page reload.
+  const form = document.querySelector('.cform') as HTMLFormElement | null;
+  const status = form?.querySelector('[data-status]') as HTMLElement | null;
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (status) { status.hidden = false; status.textContent = 'Sending…'; }
+    try {
+      const res = await fetch(form.action, { method: 'POST', body: new FormData(form) });
+      if (!res.ok) throw new Error('bad status');
+      form.reset();
+      if (status) status.textContent = 'Thanks — we’ll be in touch shortly.';
+    } catch {
+      if (status) status.textContent = 'Something went wrong. Please email office@abcabinet.us.';
+    }
+  });
+</script>
+
+<style>
+  .center { text-align: center; }
+  .form-wrap { display: grid; grid-template-columns: 1fr 1.2fr; gap: 56px; align-items: start; }
+  .form-intro h2 { margin: 8px 0 16px; }
+  .form-nap { list-style: none; padding: 0; margin: 24px 0 0; font-family: var(--font-ui); display: flex; flex-direction: column; gap: 8px; }
+
+  .cform { display: flex; flex-direction: column; gap: 18px; }
+  .cform__row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .cform label, .cform__full { display: flex; flex-direction: column; gap: 6px; font-family: var(--font-ui); font-size: 14px; color: var(--color-body); }
+  .cform input, .cform select, .cform textarea {
+    font: inherit; font-size: 16px; padding: 12px 14px; border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 8px; background: #fff; color: var(--color-off-black);
+  }
+  .cform input:focus, .cform select:focus, .cform textarea:focus { outline: none; border-color: var(--color-accent); }
+  .cform__hp { position: absolute; left: -9999px; }
+  .cform .btn { align-self: flex-start; }
+  .cform__status { font-family: var(--font-ui); font-size: 14px; margin: 0; color: var(--color-accent); }
+
+  .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 40px; text-align: center; }
+  .tcard__img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; border-radius: var(--radius); margin-bottom: 16px; }
+  .tcard h3 { margin: 0 0 4px; }
+  .tcard__role { font-family: var(--font-ui); color: var(--color-body); margin-bottom: 14px; }
+  .tcard__c { margin: 4px 0; font-family: var(--font-ui); font-size: 15px; }
+
+  .tour__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+  .tour__grid h2 { margin-bottom: 16px; }
+  .tour__grid p { margin-bottom: 24px; }
+  .tour__img { width: 100%; border-radius: var(--radius); object-fit: cover; }
+
+  @media (max-width: 900px) {
+    .form-wrap, .tour__grid { grid-template-columns: 1fr; gap: 28px; }
+    .team-grid { grid-template-columns: 1fr; max-width: 340px; margin-inline: auto; }
+  }
+  @media (max-width: 560px) { .cform__row { grid-template-columns: 1fr; } }
+</style>

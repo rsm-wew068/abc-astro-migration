@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { breadcrumbSchema } from '../lib/schema';
+import heroBg from '../assets/service/hero.jpg';
+
+const benefits = [
+  { title: 'Fast & Reliable Lead Times', desc: 'Consistent ~3-week lead times on most orders, helping you stay on schedule without compromising quality.' },
+  { title: 'Local Manufacturing, Real Control', desc: 'With our 80,000 sq ft Bay Area facility, we manage production in-house — ensuring precision, flexibility, and consistent output across projects of any scale.' },
+  { title: 'Strong Local Support', desc: 'Our local team is always within reach. From design coordination to on-site issues, we respond quickly and solve problems locally — no delays, no back-and-forth, no waiting.' },
+  { title: 'Trade-Focused Pricing', desc: 'Competitive pricing tailored for builders and trade partners — designed to support project margins without sacrificing quality.' },
+];
+
+const partners = [
+  { src: '/images/partners/lennar.png', alt: 'Lennar Homes' },
+  { src: '/images/partners/hd-supply.png', alt: 'Home Depot Supply' },
+  { src: '/images/partners/veev.png', alt: 'Veev Home, by Lennar' },
+  { src: '/images/partners/uc-davis.png', alt: 'UC Davis Health' },
+  { src: '/images/partners/ferguson.png', alt: 'Ferguson' },
+];
+---
+<BaseLayout
+  title="Trade Program | American Built Cabinets"
+  description="A trade program for designers, architects, and builders — ~3-week lead times, in-house Bay Area manufacturing, local support, and trade-focused pricing."
+  schemaNodes={[breadcrumbSchema([{ name: 'Home', url: '/' }, { name: 'Trade Program', url: '/trade-program' }])]}
+>
+  <PageHero bg={heroBg} eyebrow="Trade Program" title="Built for the trade." minHeight="62vh" />
+
+  <section class="section intro">
+    <div class="container intro__inner">
+      <h2>A seamless, reliable, and rewarding partnership.</h2>
+      <p>Our Trade Program is designed to support designers, architects, and builders. We combine high-quality manufacturing, efficient timelines, and competitive pricing to help bring your projects to life — on time and within budget.</p>
+    </div>
+  </section>
+
+  <section class="section section--muted why">
+    <div class="container">
+      <p class="eyebrow center">Why Partner with Us</p>
+      <div class="why__grid">
+        {benefits.map((b, i) => (
+          <div class="bcard">
+            <span class="bcard__num">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{b.title}</h3>
+            <p>{b.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section partners">
+    <div class="container">
+      <h2 class="center">If our well-respected trade partners can trust us with their projects, so can you.</h2>
+      <div class="logo-row">
+        {partners.map((l) => (
+          <figure class="partner">
+            <img src={l.src} alt={l.alt} loading="lazy" />
+            <figcaption>{l.alt}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--dark cta">
+    <div class="container cta__inner">
+      <h2>Book a manufacturing tour today</h2>
+      <a href="/contact" class="btn">Become a trade partner</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .center { text-align: center; }
+  .intro__inner { max-width: 820px; text-align: center; margin-inline: auto; }
+  .intro__inner h2 { margin-bottom: 20px; }
+  .intro__inner p { font-size: 19px; }
+
+  .why__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; margin-top: 40px; }
+  .bcard { background: #fff; border-radius: var(--radius); padding: 32px; border: 1px solid rgba(0,0,0,0.06); }
+  .bcard__num { font-family: var(--font-heading); font-size: 40px; color: var(--color-accent); }
+  .bcard h3 { margin: 12px 0 10px; }
+  .bcard p { margin: 0; color: var(--color-body); }
+
+  .partners h2 { max-width: 900px; margin: 0 auto 8px; }
+  .logo-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 56px; margin-top: 44px; }
+  .logo-row img { max-height: 60px; width: auto; object-fit: contain; }
+  .partner { margin: 0; text-align: center; }
+  .partner figcaption { font-family: var(--font-ui); font-size: 13px; color: var(--color-body); margin-top: 10px; }
+
+  .cta__inner { text-align: center; }
+  .cta__inner h2 { margin-bottom: 24px; }
+
+  @media (max-width: 760px) { .why__grid { grid-template-columns: 1fr; } }
+</style>

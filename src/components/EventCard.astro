@@ -1,0 +1,30 @@
+---
+import { Image } from 'astro:assets';
+import { formatDate, type EventItem } from '../lib/events';
+import { eventImage } from '../lib/eventImages';
+interface Props { event: EventItem; }
+const { event } = Astro.props;
+const thumb = eventImage(event.thumb);
+---
+<a href={`/events/${event.slug}`} class="ecard">
+  {thumb && (
+    <Image src={thumb} alt={event.title} class="ecard__img" widths={[400, 640]} sizes="(max-width: 900px) 100vw, 33vw" loading="lazy" />
+  )}
+  <div class="ecard__body">
+    <span class="ecard__date">{formatDate(event.date)}</span>
+    <h3>{event.title}</h3>
+  </div>
+</a>
+
+<style>
+  .ecard {
+    display: block; background: #fff; border-radius: var(--radius); overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.08); color: var(--color-body);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .ecard:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
+  .ecard__img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+  .ecard__body { padding: 22px; }
+  .ecard__date { font-family: var(--font-ui); font-size: 13px; color: var(--color-accent); }
+  .ecard__body h3 { font-size: 20px; margin: 8px 0 0; color: var(--color-off-black); }
+</style>

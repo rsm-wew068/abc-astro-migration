@@ -1,0 +1,114 @@
+---
+import { SITE } from '../lib/site';
+
+const pages = [
+  { label: 'Home', href: '/' },
+  { label: 'Portfolio', href: '/portfolio' },
+  { label: 'Service', href: '/service' },
+  { label: 'Gallery', href: '/gallery' },
+  { label: 'Contact Us', href: '/contact' },
+];
+const company = [
+  { label: 'About Us', href: '/about' },
+  { label: 'Trade Program', href: '/trade-program' },
+  { label: 'Contact', href: '/contact' },
+];
+const info = [
+  { label: 'Warranty', href: '/warranty' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'FAQ', href: '/faq' },
+  { label: 'Privacy', href: '/privacy' },
+];
+---
+<footer class="footer">
+  <div class="container footer__grid">
+    <div class="footer__brand">
+      <img src="/images/logo-wordmark.png" alt={SITE.name} class="footer__logo" width="190" height="52" />
+
+      <p class="footer__heading">Contact Information</p>
+      <ul class="footer__contact">
+        <li><a href={`tel:${SITE.telephone}`}>{SITE.telephoneDisplay}</a></li>
+        <li><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+        <li>
+          <address>
+            {SITE.address.street}<br />
+            {SITE.address.city}, {SITE.address.region}
+          </address>
+        </li>
+      </ul>
+    </div>
+
+    <div class="footer__col">
+      <p class="footer__heading">Pages</p>
+      {pages.map((l) => <a href={l.href}>{l.label}</a>)}
+    </div>
+    <div class="footer__col">
+      <p class="footer__heading">Company</p>
+      {company.map((l) => <a href={l.href}>{l.label}</a>)}
+    </div>
+    <div class="footer__col">
+      <p class="footer__heading">Information</p>
+      {info.map((l) => <a href={l.href}>{l.label}</a>)}
+    </div>
+  </div>
+
+  <div class="container footer__certs">
+    <img src="/images/certs/asid.png" alt="American Society of Interior Designers" loading="lazy" />
+    <img src="/images/certs/kcma.png" alt="KCMA Certified Cabinet" loading="lazy" />
+    <img src="/images/certs/nkba.png" alt="National Kitchen & Bath Association" loading="lazy" />
+    <img src="/images/certs/nari.png" alt="National Association of the Remodeling Industry" loading="lazy" />
+  </div>
+
+  <div class="container footer__bottom">
+    <p>© {new Date().getFullYear()} {SITE.shortName}. All Rights Reserved.</p>
+    <div class="footer__social">
+      <a href={SITE.sameAs[0]} aria-label="Instagram" rel="me">Instagram</a>
+      <a href={SITE.sameAs[1]} aria-label="LinkedIn" rel="me">LinkedIn</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--color-snow);
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    padding: 64px 0 32px;
+    font-family: var(--font-ui);
+    font-size: 15px;
+  }
+  .footer__grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 32px;
+  }
+  .footer__logo { width: 190px; height: auto; }
+  .footer__heading {
+    font-weight: 600;
+    color: var(--color-off-black);
+    margin: 28px 0 14px;
+  }
+  .footer__col { display: flex; flex-direction: column; gap: 12px; }
+  .footer__col a { color: var(--color-body); }
+  .footer__col a:hover { color: var(--color-accent); }
+  .footer__contact { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+  .footer__contact a { color: var(--color-body); }
+  .footer__contact address { font-style: normal; }
+  .footer__bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    color: var(--color-body);
+  }
+  .footer__certs { display: flex; align-items: center; gap: 40px; margin-top: 48px; flex-wrap: wrap; }
+  .footer__certs img { height: 70px; width: auto; object-fit: contain; }
+  .footer__social { display: flex; gap: 20px; }
+  .footer__social a { color: var(--color-body); }
+  .footer__bottom p { margin: 0; }
+  @media (max-width: 768px) {
+    .footer__grid { grid-template-columns: 1fr 1fr; }
+    .footer__bottom { flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>

@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { breadcrumbSchema } from '../lib/schema';
+import heroBg from '../assets/service/sub/warranty-hero.png';
+
+const sections = [
+  { h: '1. Warranty Coverage', body: ['ABCabinet warrants to the original purchaser that its custom laminate cabinetry products will be free from defects in materials and workmanship under normal residential use.', 'The warranty applies only to residential installations and remains valid as long as the original purchaser owns and resides in the home where the cabinets were originally installed. It covers only products manufactured or supplied by ABCabinet.'] },
+  { h: '2. Covered Components', body: ['Covered items include: cabinet boxes and structural components, laminate surfaces, edge banding, doors and drawer fronts, interior shelving, hinges, drawer slides, and standard hardware included with the product. All hardware components are covered for defects in material and workmanship under normal residential use.'] },
+  { h: '3. What ABCabinet Will Do', body: ['Upon confirmed defects, ABCabinet will, at its sole discretion: repair the defective component, or replace the defective component with the same or a comparable product. Replacement products may vary slightly in color, grain pattern, or finish. If original products are discontinued, comparable products of equal function and value may be substituted.'] },
+  { h: '4. Natural Characteristics', body: ['Wood products, laminates, and cabinet materials may exhibit natural variations in color, grain pattern, texture, or finish. These variations are normal and are not considered defects. Color changes from light exposure and environmental conditions are considered natural and are not warrantied.'] },
+  { h: '5. Exclusions', body: ['The warranty excludes damages from: improper installation, unqualified installers, post-installation modifications, misuse or negligence, harsh cleaning chemicals, excessive moisture or water exposure, steam exposure without proper ventilation, extreme temperatures, normal wear and tear, and impact or external damage.'] },
+  { h: '6. Non-Residential Use', body: ['This warranty applies only to residential applications. Cabinets in commercial properties, rental properties, multi-family developments for rental, or institutional facilities are not covered.'] },
+  { h: '7. Labor and Service', body: ['This warranty covers replacement of defective components only. Labor costs, installation, removal, shipping, and contractor fees are not covered. ABCabinet bears no responsibility for access or reinstallation costs.'] },
+  { h: '8. Limitation of Liability', body: ['ABCabinet’s liability under this warranty is limited solely to the repair or replacement of defective components. The company is not liable for incidental, indirect, or consequential damages. Some jurisdictions may not permit such limitations.'] },
+  { h: '9. Warranty Transferability', body: ['This warranty is non-transferable and applies only to the original purchaser. The warranty becomes void if the property is sold or transferred.'] },
+  { h: '10. Care and Maintenance', body: ['Proper care is required to maintain coverage. Guidelines include: cleaning with a soft cloth and mild soap, avoiding abrasive cleaners or solvents, wiping moisture immediately, avoiding steam and humidity exposure, and using proper ventilation. Failure to follow the guidelines may void coverage.'] },
+  { h: '11. Installation Warranty', body: ['ABCabinet warrants that installation services performed by ABCabinet or its authorized installers will be free from defects in workmanship for a period of one (1) year from the date of installation.', 'What is covered: problems from installation workmanship within the warranty period receive free labor repair — including cabinets not secured to wall studs, alignment or leveling problems, improper door or drawer adjustments, loose mounting from installation error, and incorrectly installed hardware.', 'What is not covered: structural home problems, cabinet movement from house settling, normal use adjustments, damage from other trades, misuse or improper care, third-party modifications, and post-installation water or environmental damage.', 'Service conditions: warranty service operates during normal business hours. ABCabinet reserves the right to inspect before service. Non-workmanship issues may incur service charges. Installation must be completed in accordance with industry standards and manufacturer guidelines; third-party unauthorized installations void the installation warranty.'] },
+  { h: '12. Filing a Warranty Claim', body: ['Claimants must provide: proof of purchase, photographs of the issue, a written defect description, installation date, and property address. ABCabinet reviews claims and determines resolution.'] },
+];
+---
+<BaseLayout
+  title="Warranty & Support | American Built Cabinets San Jose"
+  description="American Built Cabinets backs its custom laminate cabinetry with a Limited Lifetime Warranty, a one-year installation warranty, local service, and a 24-hour support response protocol."
+  schemaNodes={[breadcrumbSchema([{ name: 'Home', url: '/' }, { name: 'Warranty', url: '/warranty' }])]}
+>
+  <PageHero bg={heroBg} eyebrow="Limited Lifetime Warranty" title="Warranty & Support" minHeight="52vh" />
+
+  <section class="section legal">
+    <div class="container legal__wrap">
+      <p class="legal__lede">ABCabinet backs its custom laminate cabinetry with a Limited Lifetime Warranty, a local service infrastructure, and a 24-hour support response protocol.</p>
+      {sections.map((s) => (
+        <div class="legal__sec">
+          <h2>{s.h}</h2>
+          {s.body.map((p) => <p>{p}</p>)}
+        </div>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal__wrap { max-width: 760px; }
+  .legal__lede { font-size: 20px; color: var(--color-body); margin-bottom: 40px; }
+  .legal__sec { margin-bottom: 32px; }
+  .legal__sec h2 { font-size: clamp(20px, 2.6vw, 26px); margin-bottom: 12px; }
+  .legal__sec p { color: var(--color-body); }
+</style>

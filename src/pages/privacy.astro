@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { breadcrumbSchema } from '../lib/schema';
+import heroBg from '../assets/home/hero-2.png';
+
+const sections = [
+  { h: 'Overview', body: ['American Built Cabinets issues this Privacy Policy outlining the key policies designed to safeguard the personal information you provide when accessing this website. Users must be adults, or obtain guardian consent if under fourteen.'] },
+  { h: 'Definitions', body: ['Personal Information: all kinds of information recorded electronically or otherwise that can identify a specific natural person.', 'Deletion of Personal Information: the act of removing personal information from systems involved in daily business functions, rendering it non-retrievable and inaccessible.', 'Other Information: server data that may be automatically collected and recorded when you use this website — including keywords, pages requested, browsing records, and error logs that cannot identify individuals.'] },
+  { h: 'Information Collection', body: ['We may request that you provide personal information, and you retain the right to decide whether to provide such information.', 'Non-personal data collected includes domain names, cookies for device recognition, and aggregated usage statistics. The type and amount of information we collect depend on how you use the website.'] },
+  { h: 'Use of Personal Information', body: ['Personal information helps enhance website relevance and facilitate communications and product purchases. Your personal information may be stored and processed on servers operated by us or our affiliates.', 'Information is shared with affiliates only for stated purposes. Your personal information will not be shared with third parties for their own marketing or commercial purposes. In mergers or acquisitions, new entities must honor this policy or obtain new consent. Disclosure occurs only with explicit consent or where legally required.'] },
+  { h: 'Cookies and Similar Technologies', body: ['Cookies are plain text files stored by web servers on computers or mobile devices. We use cookies to analyze trends, administer the website, and understand how the site is used.', 'You may manage or delete cookies, though doing so may affect functionality. We do not link automatically collected log data with other personal information.'] },
+  { h: 'Information Security', body: ['This website will strictly manage and protect the personal and sensitive information you provide. Information provided as feedback is not considered confidential unless explicitly stated otherwise.'] },
+  { h: 'Links to Other Websites', body: ['This website may contain links to third-party websites, for which we accept no responsibility regarding content or privacy practices.'] },
+  { h: 'Changes to This Policy', body: ['We will publish policy changes, providing more prominent notice for significant updates involving service-model changes, ownership changes, security findings, rights modifications, or departmental changes. This Privacy Policy takes effect from the date of update.'] },
+];
+---
+<BaseLayout
+  title="Privacy Policy | American Built Cabinets"
+  description="How American Built Cabinets handles your information when you visit abcabinet.us or contact our San Jose, California team."
+  schemaNodes={[breadcrumbSchema([{ name: 'Home', url: '/' }, { name: 'Privacy', url: '/privacy' }])]}
+>
+  <PageHero bg={heroBg} eyebrow="American Built Cabinets" title="Privacy Policy" minHeight="46vh" />
+
+  <section class="section legal">
+    <div class="container legal__wrap">
+      {sections.map((s) => (
+        <div class="legal__sec">
+          <h2>{s.h}</h2>
+          {s.body.map((p) => <p>{p}</p>)}
+        </div>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal__wrap { max-width: 760px; }
+  .legal__sec { margin-bottom: 32px; }
+  .legal__sec h2 { font-size: clamp(20px, 2.6vw, 26px); margin-bottom: 12px; }
+  .legal__sec p { color: var(--color-body); }
+</style>

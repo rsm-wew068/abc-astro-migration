@@ -1,0 +1,66 @@
+---
+import { getCollection } from 'astro:content';
+import SmartImage from '../../components/SmartImage.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { breadcrumbSchema } from '../../lib/schema';
+import { SITE } from '../../lib/site';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf(),
+);
+---
+<BaseLayout
+  title={`Blog | ${SITE.name}`}
+  description="Guides and insights on custom cabinetry, materials, and finishes for Bay Area homes and builders."
+  schemaNodes={[breadcrumbSchema([
+    { name: 'Home', url: '/' },
+    { name: 'Blog', url: '/blog' },
+  ])]}
+>
+  <section class="container listing">
+    <p class="eyebrow">Blog</p>
+    <h1>Insights &amp; Guides</h1>
+    <div class="grid">
+      {posts.map((post) => (
+        <a href={`/blog/${post.id}`} class="card">
+          {post.data.coverImage && (
+            <SmartImage
+              src={post.data.coverImage}
+              alt={post.data.title}
+              widths={[320, 480]}
+              sizes="(max-width: 768px) 100vw, 380px"
+              class="card__img"
+            />
+          )}
+          <div class="card__body">
+            {post.data.category && <span class="eyebrow">{post.data.category}</span>}
+            <h3>{post.data.title}</h3>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .listing { padding: 56px 24px 80px; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 28px;
+    margin-top: 32px;
+  }
+  .card {
+    display: block;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: var(--radius);
+    overflow: hidden;
+    color: var(--color-body);
+    background: var(--color-white);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08); }
+  .card__img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+  .card__body { padding: 20px; }
+  .card__body h3 { margin: 8px 0 0; color: var(--color-off-black); font-size: 20px; }
+</style>

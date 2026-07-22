@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { breadcrumbSchema } from '../lib/schema';
+import heroBg from '../assets/about/hero.jpg';
+
+const partners = [
+  { logo: '/images/partners/lennar.png', name: 'Lennar Homes', desc: 'Production homebuilding partner for multi-unit residential communities across Northern California.' },
+  { logo: '/images/partners/hd-supply.png', name: 'Home Depot Supply', desc: 'National pro-supply distribution for builders, contractors, and developers.' },
+  { logo: '/images/partners/veev.png', name: 'Veev Home, by Lennar', desc: 'Design-build partner delivering cabinetry for high-volume residential projects across the Bay Area.' },
+  { logo: '/images/partners/uc-davis.png', name: 'UC Davis Health', desc: 'Custom commercial and institutional cabinetry for healthcare facilities.' },
+  { logo: '/images/partners/ferguson.png', name: 'Ferguson', desc: 'Wholesale trade distribution partner serving the building industry.' },
+];
+---
+<BaseLayout
+  title="Trusted Partners | American Built Cabinets"
+  description="American Built Cabinets is the manufacturing partner behind demanding Bay Area residential, commercial, and institutional projects — built locally with a 3-week average lead time."
+  schemaNodes={[breadcrumbSchema([{ name: 'Home', url: '/' }, { name: 'Trusted Partner', url: '/trusted-partner' }])]}
+>
+  <PageHero bg={heroBg} eyebrow="Trusted by Builders, Developers & Institutions" title="Trusted Partner" minHeight="60vh" />
+
+  <section class="section intro">
+    <div class="container intro__inner">
+      <p>American Built Cabinets is the manufacturing partner behind some of the Bay Area’s most demanding residential, commercial, and institutional projects — built locally in our 80,000 sq ft San Jose facility and delivered with a 3-week average lead time.</p>
+    </div>
+  </section>
+
+  <section class="section section--muted plist">
+    <div class="container">
+      {partners.map((p) => (
+        <article class="prow">
+          <div class="prow__logo"><img src={p.logo} alt={p.name} loading="lazy" /></div>
+          <div class="prow__body">
+            <h3>{p.name}</h3>
+            <p>{p.desc}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section section--dark cta">
+    <div class="container cta__inner">
+      <h2>Build with a partner you can trust.</h2>
+      <a href="/contact" class="btn">Start a project</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .intro__inner { max-width: 820px; text-align: center; margin-inline: auto; }
+  .intro__inner p { font-size: 20px; }
+
+  .prow {
+    display: grid; grid-template-columns: 260px 1fr; gap: 40px; align-items: center;
+    padding: 32px 0; border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  .prow:last-child { border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
+  .prow__logo { display: flex; align-items: center; justify-content: center; }
+  .prow__logo img { max-height: 56px; max-width: 200px; width: auto; object-fit: contain; }
+  .prow__body h3 { margin: 0 0 8px; }
+  .prow__body p { margin: 0; color: var(--color-body); font-size: 17px; }
+
+  .cta__inner { text-align: center; }
+  .cta__inner h2 { margin-bottom: 24px; }
+
+  @media (max-width: 760px) {
+    .prow { grid-template-columns: 1fr; gap: 16px; text-align: center; }
+    .prow__logo { justify-content: flex-start; }
+    @media (max-width: 760px) { .prow__logo { justify-content: center; } }
+  }
+</style>

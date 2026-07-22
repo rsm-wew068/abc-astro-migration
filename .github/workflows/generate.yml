@@ -1,0 +1,66 @@
+name: Generate blog content
+
+# Runs the AIGC pipeline in the cloud (not on anyone's laptop). Trigger it
+# manually with a topic, or on a schedule. Images go to object storage; the new
+# MDX is committed back to the repo, which triggers the Cloudflare Pages build.
+
+on:
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: 'Topic to generate (leave blank to process pipeline/topics.json)'
+        required: false
+        type: string
+      limit:
+        description: 'Max articles when processing the queue'
+        required: false
+        default: '3'
+        type: string
+  # Uncomment to auto-generate from the queue on a cadence:
+  # schedule:
+  #   - cron: '0 15 * * 1'   # Mondays 15:00 UTC
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - run: npm ci
+
+      - name: Run pipeline
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
+          S3_REGION: ${{ secrets.S3_REGION }}
+          S3_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY_ID }}
+          S3_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_ACCESS_KEY }}
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          S3_PUBLIC_BASE_URL: ${{ secrets.S3_PUBLIC_BASE_URL }}
+        run: |
+          if [ -n "${{ inputs.topic }}" ]; then
+            npx tsx pipeline/generate.ts "${{ inputs.topic }}"
+          else
+            npx tsx pipeline/generate.ts --all --limit "${{ inputs.limit }}"
+          fi
+
+      - name: Commit generated content
+        run: |
+          git config user.name "abc-content-bot"
+          git config user.email "bot@abcabinet.us"
+          git add src/content/blog
+          if git diff --cached --quiet; then
+            echo "No new content."
+          else
+            git commit -m "content: generated blog article(s)"
+            git push
+          fi

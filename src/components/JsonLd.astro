@@ -1,0 +1,11 @@
+---
+/**
+ * Renders a JSON-LD <script> into the document head. Content is server-rendered
+ * into raw HTML (no client JS), so AI answer engines and crawlers see it directly.
+ */
+interface Props {
+  schema: object;
+}
+const { schema } = Astro.props;
+---
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />
