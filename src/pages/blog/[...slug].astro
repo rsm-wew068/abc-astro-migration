@@ -67,6 +67,11 @@ if (data.faq.length) {
   <article class="post container">
     <a href="/blog" class="back">&larr; Back</a>
 
+    <p class="post__lede">{data.intro}</p>
+    {data.heroImage && (
+      <SmartImage src={data.heroImage} alt={data.title} class="post__img" widths={[720, 1080, 1440]} sizes="(max-width: 860px) 100vw, 760px" loading="eager" />
+    )}
+
     <div class="post__body">
       <Content />
     </div>
@@ -120,6 +125,8 @@ if (data.faq.length) {
   .post { max-width: 820px; padding-top: 40px; padding-bottom: 24px; }
   .back { font-family: var(--font-ui); font-size: 15px; color: var(--color-body); display: inline-block; margin-bottom: 32px; }
   .back:hover { color: var(--color-off-black); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
+  .post__lede { font-size: 21px; line-height: 1.6; color: var(--color-off-black); margin: 0 0 32px; }
+  .post :global(.post__img) { width: 100%; border-radius: var(--radius); object-fit: cover; margin: 0 0 40px; display: block; }
   .post__body :global(h2) { font-family: var(--font-heading); font-weight: 400; margin: 1.4em 0 0.5em; }
   .post__body :global(p) { color: var(--color-body); }
 

@@ -1,5 +1,5 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection } from 'astro:content';
 import SmartImage from '../../components/SmartImage.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { creativeWorkSchema, breadcrumbSchema } from '../../lib/schema';
@@ -13,9 +13,13 @@ export async function getStaticPaths() {
 
 const { item } = Astro.props;
 const { data } = item;
-const { Content } = await render(item);
 
 const heroBg = data.thumbnail ?? data.photos[0];
+
+// Storytelling layout: alternate body paragraphs with the project photos.
+const paras = item.body.trim().split(/\n{2,}/).map((s) => s.trim()).filter(Boolean);
+const mdBold = (s: string) => s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+const steps = Math.max(paras.length, data.photos.length);
 
 const schemaNodes = [
   creativeWorkSchema({
@@ -54,25 +58,25 @@ const schemaNodes = [
   <article class="work container">
     <a href="/portfolio" class="back">&larr; Back</a>
     {data.category && <p class="eyebrow center">{data.category}</p>}
-    <div class="work__body">
-      <Content />
+
+    <div class="story">
+      {Array.from({ length: steps }).map((_, i) => (
+        <>
+          {paras[i] && <p class="story__p" set:html={mdBold(paras[i])}></p>}
+          {data.photos[i] && (
+            <SmartImage
+              src={data.photos[i]}
+              alt={`${data.title} cabinetry photo ${i + 1}`}
+              class="story__img"
+              widths={[720, 1080, 1440]}
+              sizes="(max-width: 860px) 100vw, 820px"
+              loading={i === 0 ? 'eager' : 'lazy'}
+            />
+          )}
+        </>
+      ))}
     </div>
   </article>
-
-  {data.photos.length > 0 && (
-    <section class="gallery container">
-      {data.photos.map((photo, i) => (
-        <SmartImage
-          src={photo}
-          alt={`${data.title} - cabinetry installation photo ${i + 1}`}
-          class="gallery__photo"
-          widths={[640, 960, 1280]}
-          sizes="(max-width: 768px) 100vw, 50vw"
-          loading={i === 0 ? 'eager' : 'lazy'}
-        />
-      ))}
-    </section>
-  )}
 </BaseLayout>
 
 <style>
@@ -83,13 +87,14 @@ const schemaNodes = [
   .phero__inner { position: relative; text-align: center; }
   .phero h1 { color: #fff; max-width: 900px; margin-inline: auto; }
 
-  .work { max-width: 820px; padding-top: 40px; padding-bottom: 24px; text-align: center; }
+  .work { max-width: 860px; padding-top: 48px; padding-bottom: 96px; text-align: center; }
   .back { font-family: var(--font-ui); font-size: 15px; color: var(--color-body); display: inline-block; margin-bottom: 24px; }
   .back:hover { color: var(--color-off-black); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
-  .work__body { text-align: left; max-width: 720px; margin-inline: auto; }
-  .work__body :global(p) { color: var(--color-body); }
 
-  .gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; padding-bottom: 80px; }
-  .gallery :global(.gallery__photo) { width: 100%; border-radius: var(--radius); object-fit: cover; }
-  @media (max-width: 768px) { .gallery { grid-template-columns: 1fr; } }
+  .story { text-align: left; max-width: 820px; margin-inline: auto; }
+  .story__p { color: var(--color-body); font-size: 18px; line-height: 1.7; margin: 0 0 36px; }
+  .story :global(.story__img) {
+    width: 100%; border-radius: var(--radius); object-fit: cover;
+    margin: 0 0 44px; display: block;
+  }
 </style>

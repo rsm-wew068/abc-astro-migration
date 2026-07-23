@@ -14,6 +14,19 @@ const { e } = Astro.props as { e: EventItem };
 const hero = eventImage(e.thumb);
 const galleryImgs = e.gallery.map((g) => eventImage(g)).filter(Boolean) as string[];
 
+// Storytelling layout: split the content into paragraphs (grouping sentences
+// when it arrives as one block), then alternate with the gallery photos.
+const contentParas: string[] = (() => {
+  const raw = (e.content || '').trim();
+  if (!raw) return [];
+  if (/\n{2,}/.test(raw)) return raw.split(/\n{2,}/).map((s) => s.trim()).filter(Boolean);
+  const sentences = raw.match(/[^.!?]+[.!?]+(?:\s|$)/g) || [raw];
+  const out: string[] = [];
+  for (let i = 0; i < sentences.length; i += 2) out.push(sentences.slice(i, i + 2).join('').trim());
+  return out;
+})();
+const evSteps = Math.max(contentParas.length, galleryImgs.length);
+
 const eventSchema = {
   '@type': 'Event',
   name: e.title,
@@ -55,15 +68,17 @@ const eventSchema = {
   <article class="ev container">
     <a href="/events" class="back">&larr; All events</a>
     <p class="ev__lede">{e.description}</p>
-    {e.content && <div class="ev__body"><p>{e.content}</p></div>}
 
-    {galleryImgs.length > 0 && (
-      <section class="ev__gallery">
-        {galleryImgs.map((img, i) => (
-          <SmartImage src={img} alt={`${e.title} - photo ${i + 1}`} widths={[640, 960]} sizes="(max-width: 640px) 100vw, 50vw" loading="lazy" />
-        ))}
-      </section>
-    )}
+    <div class="ev__story">
+      {Array.from({ length: evSteps }).map((_, i) => (
+        <>
+          {contentParas[i] && <p class="ev__p">{contentParas[i]}</p>}
+          {galleryImgs[i] && (
+            <SmartImage src={galleryImgs[i]} alt={`${e.title} photo ${i + 1}`} class="ev__img" widths={[720, 1080, 1440]} sizes="(max-width: 860px) 100vw, 800px" loading="lazy" />
+          )}
+        </>
+      ))}
+    </div>
   </article>
 </BaseLayout>
 
@@ -79,9 +94,8 @@ const eventSchema = {
   .ev { max-width: 820px; padding-top: 40px; padding-bottom: 24px; }
   .back { font-family: var(--font-ui); font-size: 14px; color: var(--color-body); display: inline-block; margin-bottom: 24px; }
   .back:hover { color: var(--color-off-black); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
-  .ev__lede { font-size: 21px; color: var(--color-off-black); margin-bottom: 24px; }
-  .ev__body p { color: var(--color-body); }
-  .ev__gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 32px 0 80px; }
-  .ev__gallery :global(img) { width: 100%; border-radius: var(--radius); object-fit: cover; aspect-ratio: 4 / 3; }
-  @media (max-width: 640px) { .ev__gallery { grid-template-columns: 1fr; } }
+  .ev__lede { font-size: 21px; color: var(--color-off-black); margin-bottom: 32px; }
+  .ev__story { margin-bottom: 80px; }
+  .ev__p { color: var(--color-body); font-size: 18px; line-height: 1.7; margin: 0 0 36px; }
+  .ev__story :global(.ev__img) { width: 100%; border-radius: var(--radius); object-fit: cover; margin: 0 0 44px; display: block; }
 </style>
