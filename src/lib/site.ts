@@ -27,7 +27,7 @@ export const SITE = {
   areaServed: ['San Jose', 'San Francisco', 'San Mateo', 'Bay Area'],
   // sameAs — external profiles reinforcing entity identity for GEO (§4/§12).
   sameAs: [
-    'https://www.instagram.com/americanbuiltcabinets',
+    'https://www.instagram.com/american.built.cabinet_sanjose/',
     'https://www.linkedin.com/company/abcabinet',
   ],
   logo: '/images/logo.svg',

@@ -11,7 +11,9 @@
     "preview": "astro preview",
     "astro": "astro",
     "generate": "tsx --env-file-if-exists=pipeline/.env pipeline/generate.ts",
-    "migrate-images": "tsx --env-file-if-exists=pipeline/.env pipeline/migrate-local-images.ts"
+    "migrate-images": "tsx --env-file-if-exists=pipeline/.env pipeline/migrate-local-images.ts",
+    "gen-images": "tsx --env-file-if-exists=pipeline/.env pipeline/gen-images.ts",
+    "link-images": "tsx --env-file-if-exists=pipeline/.env pipeline/link-images.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.113.0",
