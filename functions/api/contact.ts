@@ -1,22 +1,25 @@
 /**
- * Cloudflare Pages Function — handles the /contact form POST.
- * Works alongside the static Astro build (no SSR adapter needed).
+ * Cloudflare Pages Function — handles the /contact form POST and delivers it
+ * with **Cloudflare Email** (the send_email binding), so no third-party service
+ * or API key is needed.
  *
- * Env (Cloudflare Pages → Settings → Environment variables):
- *   RESEND_API_KEY   Resend API key for delivery
- *   CONTACT_TO       recipient address (defaults to office@abcabinet.us)
- *   CONTACT_FROM     verified sender (e.g. website@abcabinet.us)
+ * Setup (one time, in the Cloudflare dashboard):
+ *  1. Email → Email Routing: enable it for abcabinet.us and verify a destination
+ *     inbox (e.g. office@abcabinet.us forwarding to your real mailbox).
+ *  2. Pages → this project → Settings → Functions → add a "Send email" binding
+ *     named EMAIL, with destination address = that verified address.
+ *  3. Set env var CONTACT_TO = the verified destination (defaults below).
  *
- * If RESEND_API_KEY is unset, the submission is accepted and logged (so the
- * form works end-to-end in preview) — wire the key to actually deliver mail.
+ * If the EMAIL binding isn't configured yet, the submission is accepted and
+ * logged (so the form works in preview) rather than erroring.
  */
+import { EmailMessage } from 'cloudflare:email';
+
 interface Env {
-  RESEND_API_KEY?: string;
+  EMAIL?: { send: (msg: EmailMessage) => Promise<void> };
+  CONTACT_TO?: string;
   CONTACT_FROM?: string;
 }
-
-// All inquiries go straight to the office inbox.
-const CONTACT_TO = 'office@abcabinet.us';
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const form = await request.formData();
@@ -31,33 +34,34 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     return json({ ok: false, error: 'Missing required fields' }, 400);
   }
 
+  const to = env.CONTACT_TO || 'office@abcabinet.us';
+  const from = env.CONTACT_FROM || 'website@abcabinet.us';
   const fields = ['name', 'email', 'phone', 'company', 'site', 'interest', 'message'];
-  const body = fields
-    .map((f) => `${f}: ${String(form.get(f) || '')}`)
-    .join('\n');
+  const body = fields.map((f) => `${f}: ${String(form.get(f) || '')}`).join('\n');
 
-  if (!env.RESEND_API_KEY) {
-    console.log('[contact] (no RESEND_API_KEY) submission:\n' + body);
+  if (!env.EMAIL) {
+    console.log('[contact] (no EMAIL binding) submission:\n' + body);
     return json({ ok: true, delivered: false });
   }
 
-  const res = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${env.RESEND_API_KEY}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      from: env.CONTACT_FROM || 'website@abcabinet.us',
-      to: CONTACT_TO,
-      reply_to: email,
-      subject: `New project inquiry — ${name}`,
-      text: body,
-    }),
-  });
+  const mime = [
+    `From: American Built Cabinets <${from}>`,
+    `To: <${to}>`,
+    `Reply-To: ${name} <${email}>`,
+    `Subject: New project inquiry — ${name}`.replace(/—/g, '-'),
+    'MIME-Version: 1.0',
+    'Content-Type: text/plain; charset=utf-8',
+    '',
+    body,
+  ].join('\r\n');
 
-  if (!res.ok) return json({ ok: false, error: 'Delivery failed' }, 502);
-  return json({ ok: true, delivered: true });
+  try {
+    await env.EMAIL.send(new EmailMessage(from, to, mime));
+    return json({ ok: true, delivered: true });
+  } catch (err) {
+    console.error('[contact] email send failed:', (err as Error).message);
+    return json({ ok: false, error: 'Delivery failed' }, 502);
+  }
 };
 
 function json(data: unknown, status = 200): Response {
