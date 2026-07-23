@@ -34,8 +34,9 @@ function today(): string {
   return new Date().toISOString().slice(0, 10);
 }
 
-async function loadQueue(): Promise<Topic[]> {
-  const raw = await readFile(path.join(HERE, 'topics.json'), 'utf8');
+async function loadQueue(file = 'topics.json'): Promise<Topic[]> {
+  const p = path.isAbsolute(file) ? file : path.join(HERE, file);
+  const raw = await readFile(p, 'utf8');
   return JSON.parse(raw) as Topic[];
 }
 
@@ -77,6 +78,8 @@ async function main(): Promise<void> {
   const all = args.includes('--all');
   const limitIdx = args.indexOf('--limit');
   const limit = limitIdx >= 0 ? Number(args[limitIdx + 1]) : Infinity;
+  const concIdx = args.indexOf('--concurrency');
+  const concurrency = concIdx >= 0 ? Math.max(1, Number(args[concIdx + 1])) : 1;
 
   // Cloud-only: object storage is required for real runs (images never touch git).
   if (!dry && !storageConfigured()) {
@@ -90,9 +93,12 @@ async function main(): Promise<void> {
 
   await mkdir(BLOG_DIR, { recursive: true });
 
+  const queueIdx = args.indexOf('--queue');
+  const queueFile = queueIdx >= 0 ? args[queueIdx + 1] : 'topics.json';
+
   let topics: Topic[];
   if (all) {
-    topics = (await loadQueue()).slice(0, limit);
+    topics = (await loadQueue(queueFile)).slice(0, limit);
   } else {
     const topic = args.find((a) => !a.startsWith('--') && a !== String(limit));
     if (!topic) {
@@ -102,13 +108,31 @@ async function main(): Promise<void> {
     topics = [{ topic }];
   }
 
-  console.log(`Generating ${topics.length} article(s)${dry ? ' [DRY RUN]' : ''}…`);
-  for (const t of topics) {
-    try {
-      await processTopic(t, dry);
-    } catch (err) {
-      console.error(`  ✗ failed: ${(err as Error).message}`);
+  console.log(
+    `Generating ${topics.length} article(s)${dry ? ' [DRY RUN]' : ''}` +
+      (concurrency > 1 ? ` — ${concurrency} at a time` : '') + '…',
+  );
+
+  // Simple worker pool: `concurrency` topics run at once, pulling from a shared
+  // queue. Each topic is isolated so one failure never aborts the batch.
+  const failures: string[] = [];
+  let cursor = 0;
+  async function worker(): Promise<void> {
+    while (cursor < topics.length) {
+      const t = topics[cursor++];
+      try {
+        await processTopic(t, dry);
+      } catch (err) {
+        console.error(`  ✗ failed: ${t.topic} — ${(err as Error).message}`);
+        failures.push(t.topic);
+      }
     }
+  }
+  await Promise.all(Array.from({ length: Math.min(concurrency, topics.length) }, worker));
+
+  if (failures.length) {
+    console.log(`\n${failures.length} failed:`);
+    for (const f of failures) console.log(`  - ${f}`);
   }
   console.log('\nDone. Review the new files, then: git add src/content/blog && git commit');
 }
