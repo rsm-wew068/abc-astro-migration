@@ -111,7 +111,7 @@ if (data.faq.length) {
   .center { text-align: center; }
   /* HERO */
   .bhero { position: relative; min-height: 60vh; display: flex; align-items: center; overflow: hidden; background: var(--color-off-black); }
-  .bhero__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .bhero :global(.bhero__bg) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .bhero__overlay { position: absolute; inset: 0; background: rgba(20,20,22,0.5); }
   .bhero__inner { position: relative; text-align: center; }
   .bhero h1 { color: #fff; max-width: 900px; margin-inline: auto; }
@@ -134,7 +134,7 @@ if (data.faq.length) {
   .related__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 40px; }
   .rcard { display: block; background: #fff; border-radius: var(--radius); overflow: hidden; color: var(--color-body); border: 1px solid rgba(0,0,0,0.06); transition: transform 0.2s ease, box-shadow 0.2s ease; }
   .rcard:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
-  .rcard__img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
+  .rcard :global(.rcard__img) { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; }
   .rcard__body { padding: 20px; }
   .rcard__date { font-family: var(--font-ui); font-size: 13px; color: var(--color-accent); }
   .rcard__body h3 { font-size: 19px; margin: 8px 0 0; font-family: var(--font-body); font-weight: 700; color: var(--color-off-black); }

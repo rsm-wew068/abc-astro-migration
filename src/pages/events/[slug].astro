@@ -69,7 +69,7 @@ const eventSchema = {
 
 <style>
   .ehero { position: relative; min-height: 56vh; display: flex; align-items: center; overflow: hidden; background: var(--color-off-black); }
-  .ehero__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .ehero :global(.ehero__bg) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .ehero__overlay { position: absolute; inset: 0; background: rgba(20,20,22,0.55); }
   .ehero__inner { position: relative; text-align: center; color: #fff; }
   .ehero__eyebrow { font-family: var(--font-ui); text-transform: uppercase; letter-spacing: 0.2em; font-size: 13px; color: var(--color-accent); margin-bottom: 16px; }
@@ -82,6 +82,6 @@ const eventSchema = {
   .ev__lede { font-size: 21px; color: var(--color-off-black); margin-bottom: 24px; }
   .ev__body p { color: var(--color-body); }
   .ev__gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 32px 0 80px; }
-  .ev__gallery img { width: 100%; border-radius: var(--radius); object-fit: cover; aspect-ratio: 4 / 3; }
+  .ev__gallery :global(img) { width: 100%; border-radius: var(--radius); object-fit: cover; aspect-ratio: 4 / 3; }
   @media (max-width: 640px) { .ev__gallery { grid-template-columns: 1fr; } }
 </style>

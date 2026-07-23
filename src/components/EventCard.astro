@@ -23,7 +23,7 @@ const thumb = eventImage(event.thumb);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
   .ecard:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); }
-  .ecard__img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+  .ecard :global(.ecard__img) { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
   .ecard__body { padding: 22px; }
   .ecard__date { font-family: var(--font-ui); font-size: 13px; color: var(--color-accent); }
   .ecard__body h3 { font-size: 20px; margin: 8px 0 0; font-family: var(--font-body); font-weight: 700; color: var(--color-off-black); }
