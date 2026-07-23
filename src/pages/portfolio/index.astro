@@ -17,7 +17,7 @@ const items = await getCollection('portfolio');
 >
   <section class="container listing">
     <p class="eyebrow">Portfolio</p>
-    <h1>Selected Projects</h1>
+    <h1>Built Projects</h1>
     <div class="grid">
       {items.map((item) => (
         <a href={`/portfolio/${item.id}`} class="card">
