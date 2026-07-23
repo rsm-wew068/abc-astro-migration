@@ -41,7 +41,7 @@ const items = await getCollection('portfolio');
 </BaseLayout>
 
 <style>
-  .listing { padding: 56px 24px 80px; }
+  .listing { padding: clamp(104px, 14vh, 132px) 24px 80px; }
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
