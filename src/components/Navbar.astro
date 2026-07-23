@@ -56,7 +56,8 @@ const isActive = (href: string) =>
   }
   .nav__bar {
     position: relative;
-    margin: 0 16px;
+    margin-inline: auto;
+    max-width: calc(100% - 32px);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -66,6 +67,13 @@ const isActive = (href: string) =>
     background: #fff;
     border-radius: 999px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    transition: max-width 0.35s ease, min-height 0.3s ease, box-shadow 0.3s ease;
+  }
+  /* On scroll the pill condenses to a narrower centered pill, matching Framer. */
+  .nav.is-scrolled .nav__bar {
+    max-width: 1200px;
+    min-height: 56px;
+    box-shadow: 0 12px 34px rgba(0, 0, 0, 0.14);
   }
   .nav__brand {
     display: flex;
@@ -210,4 +218,9 @@ const isActive = (href: string) =>
     const open = nav?.classList.toggle('is-open');
     burger.setAttribute('aria-expanded', open ? 'true' : 'false');
   });
+
+  // Condense the pill once scrolled past the top, and restore it at the top.
+  const onScroll = () => nav?.classList.toggle('is-scrolled', window.scrollY > 40);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
 </script>
