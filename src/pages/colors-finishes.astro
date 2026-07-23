@@ -8,6 +8,55 @@ import colorsData from '../data/colors.json';
 import finishesData from '../data/finishes.json';
 import heroBg from '../assets/service/hero.jpg';
 
+import flatImg from '../assets/colors-finishes/flat.jpg';
+import shakerImg from '../assets/colors-finishes/shaker.jpg';
+import slimShakerImg from '../assets/colors-finishes/slim-shaker.jpg';
+import doorMdp from '../assets/colors-finishes/door-mdp.jpeg';
+import doorOak from '../assets/colors-finishes/door-oak.jpeg';
+import doorWalnut from '../assets/colors-finishes/door-walnut.jpeg';
+import boxPlywood from '../assets/colors-finishes/box-plywood.jpeg';
+import boxParticle from '../assets/colors-finishes/box-particle.jpeg';
+import boxMdf from '../assets/colors-finishes/box-mdf.jpeg';
+import drawerMaple from '../assets/colors-finishes/drawer-maple.jpeg';
+import drawerBirch from '../assets/colors-finishes/drawer-birch.jpeg';
+import drawerPlywood from '../assets/colors-finishes/drawer-plywood.jpeg';
+
+const doorStyles = [
+  { img: flatImg, name: 'Flat', desc: 'Sleek, seamless slab doors for a clean, modern look.' },
+  { img: shakerImg, name: 'Shaker', desc: 'Classic recessed-panel doors with timeless craftsmanship.' },
+  { img: slimShakerImg, name: 'Slim Shaker', desc: 'A refined five-piece door with a narrower recess and modern edge.' },
+];
+
+const materialGroups = [
+  {
+    title: 'Door',
+    sub: 'Fronts and door panels — the visible face of your cabinetry.',
+    items: [
+      { img: doorMdp, name: 'Painted MDP' },
+      { img: doorOak, name: 'Rift-Sawn White Oak' },
+      { img: doorWalnut, name: 'Walnut' },
+    ],
+  },
+  {
+    title: 'Box',
+    sub: 'Carcass and interior construction — built for strength and stability.',
+    items: [
+      { img: boxPlywood, name: 'Plywood' },
+      { img: boxParticle, name: 'Particle Board' },
+      { img: boxMdf, name: 'MDF' },
+    ],
+  },
+  {
+    title: 'Drawer',
+    sub: 'Drawer boxes and fronts — smooth-gliding storage built for daily use.',
+    items: [
+      { img: drawerMaple, name: 'Solid Maple' },
+      { img: drawerBirch, name: 'Birch' },
+      { img: drawerPlywood, name: 'Plywood' },
+    ],
+  },
+];
+
 type Color = { slug: string; name: string; img: string; material: string; design: string; family: string };
 type Finish = { slug: string; name: string; img: string; material: string; design: string; category: string; description: string };
 const colors = colorsData as Color[];
@@ -29,6 +78,24 @@ const applied = colors.filter((c) => c.design).slice(0, 6);
   schemaNodes={[breadcrumbSchema([{ name: 'Home', url: '/' }, { name: 'Color & Finish', url: '/colors-finishes' }])]}
 >
   <PageHero bg={heroBg} eyebrow="Make It Yours" title="Colors & Finishes" minHeight="60vh" />
+
+  <!-- FIND YOUR DOOR STYLE -->
+  <section class="section doorstyle">
+    <div class="container">
+      <h2 class="center">Find Your Door Style</h2>
+      <div class="ds-grid">
+        {doorStyles.map((d) => (
+          <figure class="ds-card">
+            <Image src={d.img} alt={d.name} widths={[400, 640]} sizes="(max-width: 900px) 100vw, 33vw" loading="lazy" />
+            <figcaption>
+              <h3>{d.name}</h3>
+              <p>{d.desc}</p>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </div>
+  </section>
 
   <!-- FEATURED COLORS -->
   <section class="section colors" data-filter-scope>
@@ -77,6 +144,30 @@ const applied = colors.filter((c) => c.design).slice(0, 6);
           );
         })}
       </div>
+    </div>
+  </section>
+
+  <!-- MATERIALS -->
+  <section class="section materials">
+    <div class="container">
+      <h2 class="center">Materials</h2>
+      <p class="center materials__intro">Quality materials inside and out — explore the options for your doors, boxes, and wood finishes.</p>
+      {materialGroups.map((g) => (
+        <div class="mat-group">
+          <div class="mat-group__head">
+            <h3>{g.title}</h3>
+            <p>{g.sub}</p>
+          </div>
+          <div class="mat-grid">
+            {g.items.map((it) => (
+              <figure class="mat-card">
+                <Image src={it.img} alt={it.name} widths={[400, 640]} sizes="(max-width: 900px) 100vw, 33vw" loading="lazy" />
+                <figcaption>{it.name}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   </section>
 
@@ -142,6 +233,24 @@ const applied = colors.filter((c) => c.design).slice(0, 6);
   .center { text-align: center; }
   h2.center { margin-bottom: 24px; }
 
+  /* Door style */
+  .ds-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 8px; }
+  .ds-card { margin: 0; }
+  .ds-card :global(img) { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-radius: var(--radius); }
+  .ds-card figcaption h3 { margin: 16px 0 6px; }
+  .ds-card figcaption p { color: var(--color-body); margin: 0; }
+
+  /* Materials */
+  .materials__intro { max-width: 640px; margin: 0 auto 40px; color: var(--color-body); }
+  .mat-group { margin-bottom: 44px; }
+  .mat-group__head { text-align: center; margin-bottom: 24px; }
+  .mat-group__head h3 { margin: 0 0 6px; }
+  .mat-group__head p { color: var(--color-body); margin: 0; }
+  .mat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .mat-card { margin: 0; }
+  .mat-card :global(img) { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius); }
+  .mat-card figcaption { font-family: var(--font-ui); font-weight: 500; text-align: center; margin-top: 12px; color: var(--color-off-black); }
+
   .pills { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 36px; }
   .pill {
     font-family: var(--font-ui); font-size: 14px; padding: 8px 20px; border-radius: 999px;
@@ -174,6 +283,10 @@ const applied = colors.filter((c) => c.design).slice(0, 6);
   .cta__inner h2 { margin-bottom: 14px; }
   .cta__inner p { margin-bottom: 24px; }
 
-  @media (max-width: 900px) { .swatch-grid { grid-template-columns: repeat(3, 1fr); } .applied-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 900px) {
+    .swatch-grid { grid-template-columns: repeat(3, 1fr); }
+    .applied-grid { grid-template-columns: 1fr 1fr; }
+    .ds-grid, .mat-grid { grid-template-columns: 1fr; }
+  }
   @media (max-width: 560px) { .swatch-grid { grid-template-columns: 1fr 1fr; } .applied-grid, .chars-grid { grid-template-columns: 1fr; } }
 </style>
