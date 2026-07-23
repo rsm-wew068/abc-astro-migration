@@ -53,6 +53,12 @@ const isActive = (href: string) =>
     left: 0;
     right: 0;
     z-index: 50;
+    transition: transform 0.4s ease;
+  }
+  /* Like the live Framer nav: slides up out of view on scroll down, slides back
+     on scroll up (and is always shown near the top). */
+  .nav.is-hidden {
+    transform: translateY(-160%);
   }
   .nav__bar {
     position: relative;
@@ -67,13 +73,6 @@ const isActive = (href: string) =>
     background: #fff;
     border-radius: 999px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-    transition: max-width 0.35s ease, min-height 0.3s ease, box-shadow 0.3s ease;
-  }
-  /* On scroll the pill condenses to a narrower centered pill, matching Framer. */
-  .nav.is-scrolled .nav__bar {
-    max-width: 1200px;
-    min-height: 56px;
-    box-shadow: 0 12px 34px rgba(0, 0, 0, 0.14);
   }
   .nav__brand {
     display: flex;
@@ -219,8 +218,13 @@ const isActive = (href: string) =>
     burger.setAttribute('aria-expanded', open ? 'true' : 'false');
   });
 
-  // Condense the pill once scrolled past the top, and restore it at the top.
-  const onScroll = () => nav?.classList.toggle('is-scrolled', window.scrollY > 40);
+  // Hide the pill when scrolling down, reveal it when scrolling up or near the top.
+  let lastY = window.scrollY;
+  const onScroll = () => {
+    const y = window.scrollY;
+    if (y > 140 && y > lastY + 4) nav?.classList.add('is-hidden');
+    else if (y < lastY - 4 || y < 140) nav?.classList.remove('is-hidden');
+    lastY = y;
+  };
   window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
 </script>
