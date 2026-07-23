@@ -1,5 +1,5 @@
 /**
- * JSON-LD generators — the core GEO win (§4 of the migration plan).
+ * JSON-LD generators, the core GEO win (§4 of the migration plan).
  * Each content type maps its fields to schema.org structured data, injected
  * server-side into <head>. Written once per type; no per-page duplication.
  */
@@ -8,13 +8,13 @@ import { SITE } from './site';
 const ORG_ID = `${SITE.url}/#organization`;
 const WEBSITE_ID = `${SITE.url}/#website`;
 
-/** Absolute URL helper — JSON-LD must use absolute URLs. */
+/** Absolute URL helper, JSON-LD must use absolute URLs. */
 export function abs(path: string): string {
   if (/^https?:\/\//.test(path)) return path;
   return new URL(path, SITE.url).href;
 }
 
-/** Site-wide Organization — referenced by @id from every other node. */
+/** Site-wide Organization, referenced by @id from every other node. */
 export function organizationSchema() {
   return {
     '@type': 'Organization',
@@ -113,7 +113,7 @@ export function articleSchema(a: ArticleInput) {
 
 export type FaqPair = { question: string; answer: string };
 
-/** FAQPage — auto-built from a post's parsed FAQ pairs (§4/§5). */
+/** FAQPage, auto-built from a post's parsed FAQ pairs (§4/§5). */
 export function faqSchema(pairs: FaqPair[]) {
   return {
     '@type': 'FAQPage',

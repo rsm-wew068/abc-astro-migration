@@ -8,7 +8,7 @@ import { eventImage } from '../lib/eventImages';
 import brandBg from '../assets/home/hero-2.png';
 
 /**
- * Home hero carousel — reproduces the live rotating hero: a brand slide plus
+ * Home hero carousel, reproduces the live rotating hero: a brand slide plus
  * the latest event slides pulled live from the events collection (CMS-connected,
  * like the original). Adding/editing an event updates this hero on next build.
  */
@@ -16,7 +16,7 @@ const events = LATEST_EVENTS;
 const dotCount = events.length + 1;
 ---
 <section class="hc" data-hero-carousel aria-roledescription="carousel">
-  <!-- Slide 1 — brand -->
+  <!-- Slide 1, brand -->
   <div class="hc__slide is-active" data-slide>
     <Image src={brandBg} alt="" class="hc__bg" loading="eager" widths={[960, 1440, 1920]} sizes="100vw" />
     <div class="hc__overlay"></div>

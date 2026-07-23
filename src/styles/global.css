@@ -20,7 +20,7 @@
   --color-body-light: rgb(214, 214, 214);
   --color-hover-button: rgb(184, 184, 184);
 
-  /* Typography — matched to the live Framer site:
+  /* Typography, matched to the live Framer site:
      Italiana = serif display headings, Raleway = all UI/body/nav/links,
      Montserrat = bold section/column labels (footer headings, etc.). */
   --font-heading: 'Italiana', Georgia, 'Times New Roman', serif;
@@ -28,7 +28,7 @@
   --font-ui: 'Raleway', system-ui, -apple-system, sans-serif;
   --font-label: 'Montserrat', 'Raleway', system-ui, sans-serif;
 
-  /* Layout — matched to the live Framer site (1300px container, airy sections) */
+  /* Layout, matched to the live Framer site (1300px container, airy sections) */
   --container-max: 1300px;
   --container-pad: 24px;
   --radius: 12px;
@@ -77,7 +77,7 @@ a {
   transition: color 0.2s ease;
 }
 
-/* Inline links inside body copy: black text, no underline until hover — then a
+/* Inline links inside body copy: black text, no underline until hover, then a
    clear BLACK underline (never the accent blue). */
 main :is(p, li, dd) a {
   color: var(--color-off-black);
@@ -136,7 +136,7 @@ p { margin: 0 0 1.2em; }
   font-weight: 600;
 }
 
-/* Scroll-reveal — elements fade/slide in as they enter the viewport,
+/* Scroll-reveal, elements fade/slide in as they enter the viewport,
    reproducing Framer's scroll-reveal feel. Progressive: without JS everything
    is visible (the .reveal-ready class is only added when JS runs). */
 .reveal-ready [data-reveal] {

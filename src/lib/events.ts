@@ -23,7 +23,7 @@ const byDateAsc = (a: EventItem, b: EventItem) =>
 
 export const ALL_EVENTS: EventItem[] = (raw as EventItem[]).slice().sort(byDateDesc);
 
-// Start of today — events dated today or later are "upcoming".
+// Start of today, events dated today or later are "upcoming".
 const startOfToday = new Date(new Date().toDateString()).getTime();
 
 export const UPCOMING = ALL_EVENTS.filter(
@@ -48,7 +48,7 @@ export const getEvent = (slug: string) =>
   ALL_EVENTS.find((e) => e.slug === slug);
 
 export function formatDate(d: string): string {
-  // Dates are stored at UTC midnight — format in UTC to avoid an off-by-one.
+  // Dates are stored at UTC midnight, format in UTC to avoid an off-by-one.
   return new Date(d).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',

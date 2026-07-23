@@ -1,5 +1,5 @@
 /**
- * R2 media base. Public bucket URL (not a secret) — safe to commit. CMS + blog
+ * R2 media base. Public bucket URL (not a secret), safe to commit. CMS + blog
  * images live in R2; `media()` builds their public URLs. Astro optimizes these
  * remote images at build (r2.dev host allow-listed in astro.config), so visitors
  * get optimized copies from the Pages CDN, not r2.dev directly.

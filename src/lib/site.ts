@@ -2,7 +2,7 @@
  * Single source of truth for site-wide NAP (Name/Address/Phone), branding,
  * and social profiles. Consumed by JSON-LD generators (src/lib/schema.ts),
  * the footer, and page metadata so the business identity stays consistent
- * everywhere — one of the §11 audit non-negotiables.
+ * everywhere, one of the §11 audit non-negotiables.
  */
 
 export const SITE = {
@@ -22,10 +22,10 @@ export const SITE = {
     postalCode: '95112',
     country: 'US',
   },
-  // Approx. coordinates for 1748 Junction Ave, San Jose — refine before launch.
+  // Approx. coordinates for 1748 Junction Ave, San Jose, refine before launch.
   geo: { latitude: 37.3707, longitude: -121.9006 },
   areaServed: ['San Jose', 'San Francisco', 'San Mateo', 'Bay Area'],
-  // sameAs — external profiles reinforcing entity identity for GEO (§4/§12).
+  // sameAs, external profiles reinforcing entity identity for GEO (§4/§12).
   sameAs: [
     'https://www.instagram.com/american.built.cabinet_sanjose/',
     'https://www.linkedin.com/company/abcabinet',
@@ -35,7 +35,7 @@ export const SITE = {
 
 export type NavItem = { label: string; href: string; children?: NavItem[] };
 
-// Primary navigation — mirrors the live Framer header order exactly (§URLs preserved).
+// Primary navigation, mirrors the live Framer header order exactly (§URLs preserved).
 // Events opens a dropdown to Upcoming / Past (per the migration plan).
 export const NAV: NavItem[] = [
   { label: 'Home', href: '/' },

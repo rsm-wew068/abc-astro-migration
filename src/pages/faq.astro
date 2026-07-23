@@ -37,7 +37,7 @@ const categories = [
       { q: 'What is your standard lead time?', a: 'Our standard manufacturing lead time is approximately three weeks for most projects, depending on scope and specifications.' },
       { q: 'Do you coordinate delivery schedules with job sites?', a: 'Yes. We work with GCs and project teams to coordinate delivery timing and logistics to support smooth jobsite operations.' },
       { q: 'Can lead times be adjusted for larger or phased projects?', a: 'Yes. For large-scale or phased developments, we coordinate production schedules to align with construction timelines and project sequencing.' },
-      { q: 'What sets American Built Cabinets apart from other Bay Area cabinet makers?', a: 'Three things: locally controlled manufacturing in our 80,000 sq ft San Jose facility, a predictable 3-week average lead time, and centralized quality assurance — combining large-manufacturer scale with local responsiveness.' },
+      { q: 'What sets American Built Cabinets apart from other Bay Area cabinet makers?', a: 'Three things: locally controlled manufacturing in our 80,000 sq ft San Jose facility, a predictable 3-week average lead time, and centralized quality assurance, combining large-manufacturer scale with local responsiveness.' },
     ],
   },
   {
@@ -72,7 +72,7 @@ const allFaqs = categories.flatMap((c) => c.items).map((i) => ({ question: i.q, 
 ---
 <BaseLayout
   title="Cabinetry FAQ | American Built Cabinets"
-  description="Answers on custom cabinetry, lead times, materials, installation, and warranty from American Built Cabinets — a San Jose manufacturer serving the Bay Area."
+  description="Answers on custom cabinetry, lead times, materials, installation, and warranty from American Built Cabinets, a San Jose manufacturer serving the Bay Area."
   schemaNodes={[
     breadcrumbSchema([{ name: 'Home', url: '/' }, { name: 'FAQ', url: '/faq' }]),
     faqSchema(allFaqs),
@@ -128,6 +128,6 @@ const allFaqs = categories.flatMap((c) => c.items).map((i) => ({ question: i.q, 
     color: var(--color-accent);
     font-weight: 300;
   }
-  .faq__item[open] summary::after { content: '−'; }
+  .faq__item[open] summary::after { content: ', '; }
   .faq__item p { margin: 0 0 20px; color: var(--color-body); }
 </style>
