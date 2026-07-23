@@ -20,9 +20,18 @@ const MODEL = 'claude-opus-4-8';
 const BRAND = `You write for American Built Cabinets (ABCabinet), a San Jose-based
 custom cabinet manufacturer serving the Bay Area (San Jose, San Francisco, San Mateo).
 They manufacture locally, serve homeowners and builders, and emphasize quality control,
-fast ~3-week lead times, and warranty support. Voice: authoritative, practical, warm —
+fast ~3-week lead times, and warranty support. Voice: authoritative, practical, warm,
 never hypey. Write for GEO/AI answer engines: specific, factual, well-structured, with
-real depth. Avoid generic filler and near-duplicate boilerplate across posts.`;
+real depth.
+
+Write like a knowledgeable human, not an AI. HARD RULES:
+- NEVER use em dashes (—) or en dashes (–). Use commas, colons, periods, or the word
+  "to" for ranges (e.g. "2 to 3 inches"). This is non-negotiable.
+- Avoid AI-tell phrasing: no "in today's fast-paced world", "when it comes to",
+  "elevate", "seamless", "unlock", "dive in", "it's worth noting", "furthermore",
+  "moreover", or tidy rule-of-three lists in every paragraph.
+- Vary sentence length and structure. Prefer concrete specifics (dimensions, materials,
+  timelines, real tradeoffs) over generic claims. No near-duplicate boilerplate across posts.`;
 
 /** Step A — generate a full structured article from a topic brief. */
 export async function draftArticle(topic: string, category?: string): Promise<Article> {
@@ -106,8 +115,32 @@ ${JSON.stringify(article, null, 2)}`,
   return res.parsed_output;
 }
 
+/** Hard-strip em/en dashes (and other AI tells) from any generated string. */
+function stripDashes(s: string): string {
+  return s
+    .replace(/(\d)\s*[–—]\s*(\d)/g, '$1 to $2') // numeric ranges
+    .replace(/\s[–—]\s/g, ', ') // spaced dash → comma
+    .replace(/([A-Za-z])[–—]([A-Za-z])/g, '$1, $2') // unspaced dash → comma
+    .replace(/[–—]/g, ', '); // catch-all
+}
+
+/** Belt-and-suspenders: even if the model slips, no dashes survive. */
+function sanitize(a: Article): Article {
+  const s = stripDashes;
+  return {
+    ...a,
+    title: s(a.title),
+    intro: s(a.intro),
+    metaDescription: s(a.metaDescription),
+    heroAlt: s(a.heroAlt),
+    coverAlt: s(a.coverAlt),
+    sections: a.sections.map((x) => ({ heading: s(x.heading), body: s(x.body) })),
+    faq: a.faq.map((x) => ({ q: s(x.q), a: s(x.a) })),
+  };
+}
+
 /**
- * Full generate loop: draft → critique → (revise once if needed).
+ * Full generate loop: draft → critique → (revise once if needed) → sanitize.
  * Returns the best article plus the final critique for logging.
  */
 export async function generateArticle(
@@ -122,5 +155,5 @@ export async function generateArticle(
     c = await critique(article);
     revised = true;
   }
-  return { article, critique: c, revised };
+  return { article: sanitize(article), critique: c, revised };
 }
