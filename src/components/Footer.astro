@@ -25,19 +25,25 @@ const social = [
 ];
 ---
 <footer class="footer">
-  <div class="container footer__grid">
-    <div class="footer__brand">
-      <img src="/images/logo-wordmark.png" alt={SITE.name} class="footer__logo" width="190" height="52" />
+  <div class="container">
+    <img src="/images/logo-wordmark.png" alt={SITE.name} class="footer__logo" width="200" height="55" />
+  </div>
 
+  <div class="container footer__grid">
+    <div class="footer__col footer__col--contact">
       <p class="footer__heading">Contact Information</p>
       <ul class="footer__contact">
-        <li><a href={`tel:${SITE.telephone}`}>{SITE.telephoneDisplay}</a></li>
-        <li><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
         <li>
-          <address>
-            {SITE.address.street}<br />
-            {SITE.address.city}, {SITE.address.region}
-          </address>
+          <span class="footer__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg></span>
+          <a href={`tel:${SITE.telephone}`}>{SITE.telephoneDisplay}</a>
+        </li>
+        <li>
+          <span class="footer__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg></span>
+          <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+        </li>
+        <li>
+          <span class="footer__ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z"/></svg></span>
+          <address>{SITE.address.street}<br />{SITE.address.city}, {SITE.address.region}</address>
         </li>
       </ul>
     </div>
@@ -77,21 +83,24 @@ const social = [
     background: var(--color-snow);
     border-top: 1px solid rgba(0, 0, 0, 0.06);
     padding: 64px 0 32px;
-    font-family: var(--font-ui);
-    font-size: 15px;
+    font-family: var(--font-body);
+    font-size: 16px;
   }
+  .footer__logo { width: 200px; height: auto; display: block; margin-bottom: 44px; }
   .footer__grid {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr;
     gap: 32px;
+    align-items: start;
   }
-  .footer__logo { width: 190px; height: auto; }
   .footer__heading {
+    font-family: var(--font-label);
     font-weight: 600;
+    font-size: 16px;
     color: var(--color-off-black);
-    margin: 28px 0 14px;
+    margin: 0 0 20px;
   }
-  .footer__col { display: flex; flex-direction: column; gap: 12px; }
+  .footer__col { display: flex; flex-direction: column; gap: 14px; }
   .footer__col a { color: var(--color-body); }
   .footer__col a:hover {
     color: var(--color-off-black);
@@ -100,9 +109,12 @@ const social = [
     text-decoration-thickness: 2px;
     text-underline-offset: 3px;
   }
-  .footer__contact { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+  .footer__contact { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 16px; }
+  .footer__contact li { display: flex; align-items: center; gap: 14px; }
+  .footer__ico { flex-shrink: 0; color: var(--color-off-black); line-height: 0; }
+  .footer__ico svg { width: 22px; height: 22px; display: block; }
   .footer__contact a { color: var(--color-body); }
-  .footer__contact address { font-style: normal; }
+  .footer__contact address { font-style: normal; color: var(--color-body); }
   .footer__bottom {
     display: flex;
     justify-content: space-between;

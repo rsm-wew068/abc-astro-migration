@@ -1,4 +1,4 @@
-import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { ListObjectsV2Command, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 
 /**
  * Image object storage — keeps binaries OUT of git (they scale to ~1GB/yr at
@@ -61,4 +61,26 @@ export async function uploadImage(
   );
   const base = process.env.S3_PUBLIC_BASE_URL!.replace(/\/$/, '');
   return `${base}/${key}`;
+}
+
+/** List existing object keys under a prefix so batch jobs can resume safely. */
+export async function listObjectKeys(prefix: string): Promise<Set<string>> {
+  const keys = new Set<string>();
+  let continuationToken: string | undefined;
+
+  do {
+    const result = await s3().send(
+      new ListObjectsV2Command({
+        Bucket: process.env.S3_BUCKET!,
+        Prefix: prefix,
+        ContinuationToken: continuationToken,
+      }),
+    );
+    for (const object of result.Contents ?? []) {
+      if (object.Key) keys.add(object.Key);
+    }
+    continuationToken = result.NextContinuationToken;
+  } while (continuationToken);
+
+  return keys;
 }

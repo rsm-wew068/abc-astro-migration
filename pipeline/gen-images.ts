@@ -17,22 +17,40 @@ import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { generateImageBytes } from './lib/images';
-import { isConfigured as storageConfigured, uploadImage } from './lib/storage';
+import {
+  isConfigured as storageConfigured,
+  listObjectKeys,
+  uploadImage,
+} from './lib/storage';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const PROMPT_DIR = path.join(HERE, 'img-prompts');
 
 type Prompt = { slug: string; heroPrompt: string; coverPrompt: string };
 
-async function processOne(p: Prompt): Promise<void> {
+async function processOne(p: Prompt, existingKeys: Set<string>): Promise<void> {
   console.log(`\n▶ ${p.slug}`);
-  const [heroBytes, coverBytes] = await Promise.all([
-    generateImageBytes(p.heroPrompt, '1536x1024'),
-    generateImageBytes(p.coverPrompt, '1536x1024'),
-  ]);
-  await uploadImage(`blog/${p.slug}-hero.png`, heroBytes);
-  await uploadImage(`blog/${p.slug}-cover.png`, coverBytes);
-  console.log(`  ✓ ${p.slug} hero + cover uploaded to R2`);
+  const heroKey = `blog/${p.slug}-hero.png`;
+  const coverKey = `blog/${p.slug}-cover.png`;
+  const missing = [
+    existingKeys.has(heroKey) ? null : { key: heroKey, prompt: p.heroPrompt, label: 'hero' },
+    existingKeys.has(coverKey) ? null : { key: coverKey, prompt: p.coverPrompt, label: 'cover' },
+  ].filter((image): image is { key: string; prompt: string; label: string } => Boolean(image));
+
+  if (!missing.length) {
+    console.log('  ↷ hero + cover already exist in R2');
+    return;
+  }
+
+  const generated = await Promise.all(
+    missing.map(async (image) => ({
+      ...image,
+      bytes: await generateImageBytes(image.prompt, '1536x1024'),
+    })),
+  );
+  await Promise.all(generated.map((image) => uploadImage(image.key, image.bytes)));
+  for (const image of generated) existingKeys.add(image.key);
+  console.log(`  ✓ ${generated.map((image) => image.label).join(' + ')} uploaded to R2`);
 }
 
 async function main(): Promise<void> {
@@ -50,7 +68,18 @@ async function main(): Promise<void> {
   for (const f of files) {
     prompts.push(JSON.parse(await readFile(path.join(PROMPT_DIR, f), 'utf8')));
   }
-  console.log(`Generating images for ${prompts.length} article(s) — ${concurrency} at a time…`);
+  console.log('Checking R2 for existing images…');
+  const existingKeys = await listObjectKeys('blog/');
+  const missingCount = prompts.reduce(
+    (count, p) =>
+      count +
+      Number(!existingKeys.has(`blog/${p.slug}-hero.png`)) +
+      Number(!existingKeys.has(`blog/${p.slug}-cover.png`)),
+    0,
+  );
+  console.log(
+    `Found ${missingCount} missing image(s) across ${prompts.length} article(s) — ${concurrency} at a time…`,
+  );
 
   const failures: string[] = [];
   let cursor = 0;
@@ -58,7 +87,7 @@ async function main(): Promise<void> {
     while (cursor < prompts.length) {
       const p = prompts[cursor++];
       try {
-        await processOne(p);
+        await processOne(p, existingKeys);
       } catch (err) {
         console.error(`  ✗ ${p.slug}: ${(err as Error).message}`);
         failures.push(p.slug);

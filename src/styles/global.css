@@ -20,10 +20,13 @@
   --color-body-light: rgb(214, 214, 214);
   --color-hover-button: rgb(184, 184, 184);
 
-  /* Typography */
+  /* Typography — matched to the live Framer site:
+     Italiana = serif display headings, Raleway = all UI/body/nav/links,
+     Montserrat = bold section/column labels (footer headings, etc.). */
   --font-heading: 'Italiana', Georgia, 'Times New Roman', serif;
   --font-body: 'Raleway', system-ui, -apple-system, sans-serif;
-  --font-ui: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-ui: 'Raleway', system-ui, -apple-system, sans-serif;
+  --font-label: 'Montserrat', 'Raleway', system-ui, sans-serif;
 
   /* Layout — matched to the live Framer site (1300px container, airy sections) */
   --container-max: 1300px;
