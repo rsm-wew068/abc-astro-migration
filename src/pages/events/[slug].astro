@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import SmartImage from '../../components/SmartImage.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { breadcrumbSchema } from '../../lib/schema';
 import { SITE } from '../../lib/site';
@@ -12,14 +12,14 @@ export function getStaticPaths() {
 
 const { e } = Astro.props as { e: EventItem };
 const hero = eventImage(e.thumb);
-const galleryImgs = e.gallery.map((g) => eventImage(g)).filter(Boolean);
+const galleryImgs = e.gallery.map((g) => eventImage(g)).filter(Boolean) as string[];
 
 const eventSchema = {
   '@type': 'Event',
   name: e.title,
   startDate: e.date,
   eventStatus: 'https://schema.org/EventScheduled',
-  ...(hero ? { image: new URL(hero.src, SITE.url).href } : {}),
+  ...(hero ? { image: hero } : {}),
   description: e.description,
   organizer: { '@id': `${SITE.url}/#organization` },
   location: {
@@ -32,7 +32,7 @@ const eventSchema = {
 <BaseLayout
   title={`${e.title} | American Built Cabinets`}
   description={e.description}
-  image={hero?.src}
+  image={hero}
   schemaNodes={[
     breadcrumbSchema([
       { name: 'Home', url: '/' },
@@ -43,7 +43,7 @@ const eventSchema = {
   ]}
 >
   <header class="ehero">
-    {hero && <Image src={hero} alt="" class="ehero__bg" widths={[960, 1440, 1920]} sizes="100vw" loading="eager" />}
+    {hero && <SmartImage src={hero} alt="" class="ehero__bg" widths={[960, 1440, 1920]} sizes="100vw" loading="eager" />}
     <div class="ehero__overlay"></div>
     <div class="container ehero__inner">
       <p class="ehero__eyebrow">{e.category || 'Event'}</p>
@@ -60,7 +60,7 @@ const eventSchema = {
     {galleryImgs.length > 0 && (
       <section class="ev__gallery">
         {galleryImgs.map((img, i) => (
-          <Image src={img!} alt={`${e.title} — photo ${i + 1}`} widths={[640, 960]} sizes="(max-width: 640px) 100vw, 50vw" loading="lazy" />
+          <SmartImage src={img} alt={`${e.title} - photo ${i + 1}`} widths={[640, 960]} sizes="(max-width: 640px) 100vw, 50vw" loading="lazy" />
         ))}
       </section>
     )}

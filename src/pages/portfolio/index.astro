@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import { Image } from 'astro:assets';
+import SmartImage from '../../components/SmartImage.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { breadcrumbSchema } from '../../lib/schema';
 import { SITE } from '../../lib/site';
@@ -22,7 +22,7 @@ const items = await getCollection('portfolio');
       {items.map((item) => (
         <a href={`/portfolio/${item.id}`} class="card">
           {item.data.thumbnail && (
-            <Image
+            <SmartImage
               src={item.data.thumbnail}
               alt={item.data.title}
               widths={[400, 600]}

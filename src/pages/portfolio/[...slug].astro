@@ -1,8 +1,9 @@
 ---
 import { getCollection, render } from 'astro:content';
-import { Image } from 'astro:assets';
+import SmartImage from '../../components/SmartImage.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { creativeWorkSchema, breadcrumbSchema } from '../../lib/schema';
+import { imageUrl } from '../../lib/img';
 import { SITE } from '../../lib/site';
 
 export async function getStaticPaths() {
@@ -22,8 +23,8 @@ const schemaNodes = [
     description: data.summary,
     slug: item.id,
     images: [
-      ...(data.thumbnail ? [data.thumbnail.src] : []),
-      ...data.photos.map((p) => p.src),
+      ...(data.thumbnail ? [imageUrl(data.thumbnail)!] : []),
+      ...data.photos.map((p) => imageUrl(p)!),
     ],
     category: data.category,
   }),
@@ -37,12 +38,12 @@ const schemaNodes = [
 <BaseLayout
   title={`${data.title} | ${SITE.name}`}
   description={data.summary}
-  image={data.thumbnail?.src}
+  image={imageUrl(data.thumbnail)}
   schemaNodes={schemaNodes}
 >
   <header class="phero">
     {heroBg && (
-      <Image src={heroBg} alt="" class="phero__bg" loading="eager" widths={[960, 1440, 1920]} sizes="100vw" />
+      <SmartImage src={heroBg} alt="" class="phero__bg" loading="eager" widths={[960, 1440, 1920]} sizes="100vw" />
     )}
     <div class="phero__overlay"></div>
     <div class="container phero__inner">
@@ -61,9 +62,9 @@ const schemaNodes = [
   {data.photos.length > 0 && (
     <section class="gallery container">
       {data.photos.map((photo, i) => (
-        <Image
+        <SmartImage
           src={photo}
-          alt={`${data.title} — cabinetry installation photo ${i + 1}`}
+          alt={`${data.title} - cabinetry installation photo ${i + 1}`}
           class="gallery__photo"
           widths={[640, 960, 1280]}
           sizes="(max-width: 768px) 100vw, 50vw"

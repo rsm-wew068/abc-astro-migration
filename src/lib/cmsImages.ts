@@ -1,26 +1,10 @@
-import type { ImageMetadata } from 'astro';
+import { media } from './media';
 
 /**
- * Filename → optimized image resolvers for the CMS collections whose images
- * live in src/assets/<collection>/. Data JSON stores bare filenames; these map
- * them through astro:assets. To migrate a collection to R2 later, swap the
- * matching resolver to return R2 URLs — call sites don't change.
+ * CMS collection images now live in R2. These resolvers turn a stored filename
+ * into its R2 URL; <SmartImage> optimizes the remote image at build.
  */
-function resolver(glob: Record<string, { default: ImageMetadata }>) {
-  const byName = new Map<string, ImageMetadata>();
-  for (const [path, mod] of Object.entries(glob)) {
-    byName.set(path.split('/').pop()!, mod.default);
-  }
-  return (filename: string | undefined): ImageMetadata | undefined =>
-    filename ? byName.get(filename) : undefined;
-}
-
-export const galleryImage = resolver(
-  import.meta.glob('../assets/gallery/*.{png,jpg,jpeg,webp,avif}', { eager: true }),
-);
-export const colorsImage = resolver(
-  import.meta.glob('../assets/colors/*.{png,jpg,jpeg,webp,avif}', { eager: true }),
-);
-export const finishesImage = resolver(
-  import.meta.glob('../assets/finishes/*.{png,jpg,jpeg,webp,avif}', { eager: true }),
-);
+export const galleryImage = (f: string | undefined) => media('gallery', f);
+export const colorsImage = (f: string | undefined) => media('colors', f);
+export const finishesImage = (f: string | undefined) => media('finishes', f);
+export const colorsFinishesImage = (f: string | undefined) => media('colors-finishes', f);

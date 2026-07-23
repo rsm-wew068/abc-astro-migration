@@ -34,8 +34,15 @@ export const PAST = ALL_EVENTS.filter(
   (e) => new Date(e.date).getTime() < startOfToday,
 ).sort(byDateDesc);
 
+// Events excluded from the homepage hero carousel (still shown on events pages).
+const HERO_EXCLUDE = [
+  'american-built-cabinets-proudly-sponsored-the-ktsf-50th-anniversary-summer-concert',
+];
+
 /** Latest events for the homepage hero carousel. */
-export const LATEST_EVENTS = ALL_EVENTS.slice(0, 3);
+export const LATEST_EVENTS = ALL_EVENTS.filter(
+  (e) => !HERO_EXCLUDE.includes(e.slug),
+).slice(0, 3);
 
 export const getEvent = (slug: string) =>
   ALL_EVENTS.find((e) => e.slug === slug);

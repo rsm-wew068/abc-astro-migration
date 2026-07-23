@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import SmartImage from './SmartImage.astro';
 import { formatDate, type EventItem } from '../lib/events';
 import { eventImage } from '../lib/eventImages';
 interface Props { event: EventItem; }
@@ -8,7 +8,7 @@ const thumb = eventImage(event.thumb);
 ---
 <a href={`/events/${event.slug}`} class="ecard">
   {thumb && (
-    <Image src={thumb} alt={event.title} class="ecard__img" widths={[400, 640]} sizes="(max-width: 900px) 100vw, 33vw" loading="lazy" />
+    <SmartImage src={thumb} alt={event.title} class="ecard__img" widths={[400, 640]} sizes="(max-width: 900px) 100vw, 33vw" loading="lazy" />
   )}
   <div class="ecard__body">
     <span class="ecard__date">{formatDate(event.date)}</span>

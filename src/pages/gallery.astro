@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import SmartImage from '../components/SmartImage.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import { breadcrumbSchema } from '../lib/schema';
@@ -38,7 +38,7 @@ const groups = order
             const img = galleryImage(it.img);
             return img ? (
               <figure class="mfig">
-                <Image src={img} alt={it.title} widths={[400, 700]} sizes="(max-width: 700px) 100vw, 33vw" loading="lazy" />
+                <SmartImage src={img} alt={it.title} widths={[400, 700]} sizes="(max-width: 700px) 100vw, 33vw" loading="lazy" />
               </figure>
             ) : null;
           })}

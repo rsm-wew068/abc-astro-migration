@@ -1,58 +1,47 @@
 ---
-import { Image } from 'astro:assets';
+import SmartImage from '../components/SmartImage.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import { breadcrumbSchema } from '../lib/schema';
-import { colorsImage, finishesImage } from '../lib/cmsImages';
+import { colorsImage, finishesImage, colorsFinishesImage } from '../lib/cmsImages';
 import colorsData from '../data/colors.json';
 import finishesData from '../data/finishes.json';
 import heroBg from '../assets/service/hero.jpg';
 
-import flatImg from '../assets/colors-finishes/flat.jpg';
-import shakerImg from '../assets/colors-finishes/shaker.jpg';
-import slimShakerImg from '../assets/colors-finishes/slim-shaker.jpg';
-import doorMdp from '../assets/colors-finishes/door-mdp.jpeg';
-import doorOak from '../assets/colors-finishes/door-oak.jpeg';
-import doorWalnut from '../assets/colors-finishes/door-walnut.jpeg';
-import boxPlywood from '../assets/colors-finishes/box-plywood.jpeg';
-import boxParticle from '../assets/colors-finishes/box-particle.jpeg';
-import boxMdf from '../assets/colors-finishes/box-mdf.jpeg';
-import drawerMaple from '../assets/colors-finishes/drawer-maple.jpeg';
-import drawerBirch from '../assets/colors-finishes/drawer-birch.jpeg';
-import drawerPlywood from '../assets/colors-finishes/drawer-plywood.jpeg';
+const cf = (f: string) => colorsFinishesImage(f)!;
 
 const doorStyles = [
-  { img: flatImg, name: 'Flat', desc: 'Sleek, seamless slab doors for a clean, modern look.' },
-  { img: shakerImg, name: 'Shaker', desc: 'Classic recessed-panel doors with timeless craftsmanship.' },
-  { img: slimShakerImg, name: 'Slim Shaker', desc: 'A refined five-piece door with a narrower recess and modern edge.' },
+  { img: cf('flat.jpg'), name: 'Flat', desc: 'Sleek, seamless slab doors for a clean, modern look.' },
+  { img: cf('shaker.jpg'), name: 'Shaker', desc: 'Classic recessed-panel doors with timeless craftsmanship.' },
+  { img: cf('slim-shaker.jpg'), name: 'Slim Shaker', desc: 'A refined five-piece door with a narrower recess and modern edge.' },
 ];
 
 const materialGroups = [
   {
     title: 'Door',
-    sub: 'Fronts and door panels — the visible face of your cabinetry.',
+    sub: 'Fronts and door panels - the visible face of your cabinetry.',
     items: [
-      { img: doorMdp, name: 'Painted MDP' },
-      { img: doorOak, name: 'Rift-Sawn White Oak' },
-      { img: doorWalnut, name: 'Walnut' },
+      { img: cf('door-mdp.jpeg'), name: 'Painted MDP' },
+      { img: cf('door-oak.jpeg'), name: 'Rift-Sawn White Oak' },
+      { img: cf('door-walnut.jpeg'), name: 'Walnut' },
     ],
   },
   {
     title: 'Box',
-    sub: 'Carcass and interior construction — built for strength and stability.',
+    sub: 'Carcass and interior construction - built for strength and stability.',
     items: [
-      { img: boxPlywood, name: 'Plywood' },
-      { img: boxParticle, name: 'Particle Board' },
-      { img: boxMdf, name: 'MDF' },
+      { img: cf('box-plywood.jpeg'), name: 'Plywood' },
+      { img: cf('box-particle.jpeg'), name: 'Particle Board' },
+      { img: cf('box-mdf.jpeg'), name: 'MDF' },
     ],
   },
   {
     title: 'Drawer',
-    sub: 'Drawer boxes and fronts — smooth-gliding storage built for daily use.',
+    sub: 'Drawer boxes and fronts - smooth-gliding storage built for daily use.',
     items: [
-      { img: drawerMaple, name: 'Solid Maple' },
-      { img: drawerBirch, name: 'Birch' },
-      { img: drawerPlywood, name: 'Plywood' },
+      { img: cf('drawer-maple.jpeg'), name: 'Solid Maple' },
+      { img: cf('drawer-birch.jpeg'), name: 'Birch' },
+      { img: cf('drawer-plywood.jpeg'), name: 'Plywood' },
     ],
   },
 ];
@@ -86,7 +75,7 @@ const applied = colors.filter((c) => c.design).slice(0, 6);
       <div class="ds-grid">
         {doorStyles.map((d) => (
           <figure class="ds-card">
-            <Image src={d.img} alt={d.name} widths={[400, 640]} sizes="(max-width: 900px) 100vw, 33vw" loading="lazy" />
+            <SmartImage src={d.img} alt={d.name} widths={[400, 640]} sizes="(max-width: 900px) 100vw, 33vw" loading="lazy" />
             <figcaption>
               <h3>{d.name}</h3>
               <p>{d.desc}</p>
@@ -110,7 +99,7 @@ const applied = colors.filter((c) => c.design).slice(0, 6);
           const img = colorsImage(c.img);
           return (
             <figure class="swatch" data-tag={c.family}>
-              {img && <Image src={img} alt={c.name} widths={[200, 320]} sizes="200px" loading="lazy" />}
+              {img && <SmartImage src={img} alt={c.name} widths={[200, 320]} sizes="200px" loading="lazy" />}
               <figcaption>
                 <span class="swatch__name">{c.name}</span>
                 <span class="swatch__meta">{c.material}</span>
@@ -135,7 +124,7 @@ const applied = colors.filter((c) => c.design).slice(0, 6);
           const img = finishesImage(f.img);
           return (
             <figure class="swatch swatch--wide" data-tag={f.category}>
-              {img && <Image src={img} alt={f.name} widths={[240, 400]} sizes="240px" loading="lazy" />}
+              {img && <SmartImage src={img} alt={f.name} widths={[240, 400]} sizes="240px" loading="lazy" />}
               <figcaption>
                 <span class="swatch__name">{f.name}</span>
                 {f.description && <span class="swatch__desc">{f.description}</span>}
@@ -161,7 +150,7 @@ const applied = colors.filter((c) => c.design).slice(0, 6);
           <div class="mat-grid">
             {g.items.map((it) => (
               <figure class="mat-card">
-                <Image src={it.img} alt={it.name} widths={[400, 640]} sizes="(max-width: 900px) 100vw, 33vw" loading="lazy" />
+                <SmartImage src={it.img} alt={it.name} widths={[400, 640]} sizes="(max-width: 900px) 100vw, 33vw" loading="lazy" />
                 <figcaption>{it.name}</figcaption>
               </figure>
             ))}
@@ -182,7 +171,7 @@ const applied = colors.filter((c) => c.design).slice(0, 6);
             const img = colorsImage(c.design);
             return img ? (
               <figure class="acard">
-                <Image src={img} alt={`${c.name} applied`} widths={[400, 700]} sizes="(max-width: 900px) 100vw, 33vw" loading="lazy" />
+                <SmartImage src={img} alt={`${c.name} applied`} widths={[400, 700]} sizes="(max-width: 900px) 100vw, 33vw" loading="lazy" />
                 <figcaption>{c.name}</figcaption>
               </figure>
             ) : null;

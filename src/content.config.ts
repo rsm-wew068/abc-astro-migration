@@ -34,9 +34,10 @@ const portfolio = defineCollection({
       title: z.string(),
       category: z.string().optional(),
       summary: z.string(),
-      thumbnail: image().optional(),
+      // Local asset (dev/seed) OR a remote object-storage URL (prod pipeline).
+      thumbnail: z.union([image(), z.string().url()]).optional(),
       // Ordered gallery images for the case study + ImageObject schema.
-      photos: z.array(image()).optional().default([]),
+      photos: z.array(z.union([image(), z.string().url()])).optional().default([]),
       publishDate: z.coerce.date().optional(),
     }),
 });

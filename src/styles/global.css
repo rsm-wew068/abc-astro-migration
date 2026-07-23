@@ -75,14 +75,17 @@ a {
 }
 a:hover { color: var(--color-accent); }
 
-/* Inline links inside body copy: black with a clear underline (matches Framer). */
+/* Inline links inside body copy: black, underline only on hover. */
 main :is(p, li, dd) a {
   color: var(--color-off-black);
+  text-decoration: none;
+}
+main :is(p, li, dd) a:hover {
+  color: var(--color-accent);
   text-decoration: underline;
   text-decoration-thickness: 2px;
   text-underline-offset: 4px;
 }
-main :is(p, li, dd) a:hover { color: var(--color-accent); }
 
 img { max-width: 100%; height: auto; display: block; }
 

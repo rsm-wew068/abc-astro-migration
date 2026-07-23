@@ -1,5 +1,6 @@
 ---
 import { Image } from 'astro:assets';
+import SmartImage from './SmartImage.astro';
 import { SITE } from '../lib/site';
 import { LATEST_EVENTS, formatDate } from '../lib/events';
 import { eventImage } from '../lib/eventImages';
@@ -33,7 +34,7 @@ const dotCount = events.length + 1;
   <!-- Event slides (from the events collection) -->
   {events.map((e) => (
     <div class="hc__slide" data-slide>
-      <Image src={eventImage(e.thumb)!} alt="" class="hc__bg" widths={[960, 1440, 1920]} sizes="100vw" loading="lazy" />
+      <SmartImage src={eventImage(e.thumb)!} alt="" class="hc__bg" widths={[960, 1440, 1920]} sizes="100vw" loading="lazy" />
       <div class="hc__overlay"></div>
       <div class="container hc__inner hc__event">
         <p class="hc__eyebrow">Latest Event</p>
