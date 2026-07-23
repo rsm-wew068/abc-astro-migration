@@ -9,7 +9,6 @@ import heroBg from '../assets/contact/hero.png';
 import tomImg from '../assets/contact/tom.jpg';
 import scarlettImg from '../assets/contact/scarlett.jpg';
 import brightonImg from '../assets/contact/brighton.jpg';
-import tourImg from '../assets/contact/tour.png';
 
 const team = [
   { img: tomImg, name: 'Tom Weng', role: 'General Manager', phone: '669-298-1888', email: 'ihuan@miltechs.us' },
@@ -19,7 +18,7 @@ const team = [
 ---
 <BaseLayout
   title="Contact | American Built Cabinets"
-  description="Tell us about your project. Reach the American Built Cabinets team in San Jose — or book a manufacturing tour of our 80,000 sq ft Bay Area facility."
+  description="Tell us about your project. Reach the American Built Cabinets team in San Jose for custom cabinetry, builder projects, and design consultations."
   schemaNodes={[localBusinessSchema()]}
 >
   <PageHero bg={heroBg} eyebrow="Tell Us About Your Project" title="Let's Build Together" minHeight="62vh" />
@@ -86,17 +85,6 @@ const team = [
     </div>
   </section>
 
-  <!-- TOUR CTA -->
-  <section class="section tour">
-    <div class="container tour__grid">
-      <div>
-        <h2>Book a manufacturing tour today</h2>
-        <p>See where your cabinetry is made. Tour our 80,000 sq ft San Jose facility and meet the team behind the work.</p>
-        <a href={`mailto:${SITE.email}?subject=Manufacturing%20tour`} class="btn">Request a tour</a>
-      </div>
-      <Image src={tourImg} alt="American Built Cabinets manufacturing facility" class="tour__img" widths={[500, 800]} sizes="(max-width: 900px) 100vw, 560px" />
-    </div>
-  </section>
 </BaseLayout>
 
 <script>
@@ -141,13 +129,8 @@ const team = [
   .tcard__role { font-family: var(--font-ui); color: var(--color-body); margin-bottom: 14px; }
   .tcard__c { margin: 4px 0; font-family: var(--font-ui); font-size: 15px; }
 
-  .tour__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
-  .tour__grid h2 { margin-bottom: 16px; }
-  .tour__grid p { margin-bottom: 24px; }
-  .tour__img { width: 100%; border-radius: var(--radius); object-fit: cover; }
-
   @media (max-width: 900px) {
-    .form-wrap, .tour__grid { grid-template-columns: 1fr; gap: 28px; }
+    .form-wrap { grid-template-columns: 1fr; gap: 28px; }
     .team-grid { grid-template-columns: 1fr; max-width: 340px; margin-inline: auto; }
   }
   @media (max-width: 560px) { .cform__row { grid-template-columns: 1fr; } }

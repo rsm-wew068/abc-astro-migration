@@ -80,9 +80,11 @@ const isActive = (href: string) =>
     color: var(--color-off-black);
     white-space: nowrap;
   }
-  .nav__link:hover,
+  .nav__link:hover {
+    color: var(--color-body);
+  }
   .nav__link.is-active {
-    color: var(--color-accent);
+    color: var(--color-off-black);
   }
 
   /* Events dropdown */
@@ -120,7 +122,7 @@ const isActive = (href: string) =>
     white-space: nowrap;
   }
   .nav__menu-link:hover,
-  .nav__menu-link.is-active { background: var(--color-off-white); color: var(--color-accent); }
+  .nav__menu-link.is-active { background: var(--color-off-white); color: var(--color-off-black); }
   .nav__burger {
     display: none;
     flex-direction: column;
