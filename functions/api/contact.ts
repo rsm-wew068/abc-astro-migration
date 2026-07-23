@@ -34,7 +34,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     return json({ ok: false, error: 'Missing required fields' }, 400);
   }
 
-  const to = env.CONTACT_TO || 'office@abcabinet.us';
+  const to = env.CONTACT_TO || 'scarlett.h@abcabinet.us';
   const from = env.CONTACT_FROM || 'website@abcabinet.us';
   const fields = ['name', 'email', 'phone', 'company', 'site', 'interest', 'message'];
   const body = fields.map((f) => `${f}: ${String(form.get(f) || '')}`).join('\n');

@@ -60,9 +60,10 @@ h1, h2, h3, h4 {
   margin: 0 0 0.5em;
 }
 
+/* All headings use Italiana (serif), matching the live Framer heading styles. */
 h1 { font-size: clamp(40px, 6vw, 65px); }
-h2 { font-size: clamp(30px, 4.6vw, 46px); }
-h3 { font-size: clamp(22px, 2.6vw, 28px); font-family: var(--font-body); font-weight: 700; }
+h2 { font-size: clamp(30px, 4.8vw, 50px); }
+h3 { font-size: clamp(24px, 3.2vw, 34px); }
 h4 { font-size: clamp(20px, 2.5vw, 24px); }
 
 /* Links inherit the surrounding text color by default (matches the live design);
@@ -74,13 +75,14 @@ a {
 }
 a:hover { color: var(--color-accent); }
 
-/* Inline links inside body copy stay identifiable — accent + underline. */
+/* Inline links inside body copy: black with a clear underline (matches Framer). */
 main :is(p, li, dd) a {
-  color: var(--color-accent);
+  color: var(--color-off-black);
   text-decoration: underline;
-  text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
 }
-main :is(p, li, dd) a:hover { color: var(--color-accent-hover); }
+main :is(p, li, dd) a:hover { color: var(--color-accent); }
 
 img { max-width: 100%; height: auto; display: block; }
 
