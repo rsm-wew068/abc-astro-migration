@@ -73,16 +73,17 @@ a {
   text-decoration: none;
   transition: color 0.2s ease;
 }
-a:hover { color: var(--color-accent); }
 
-/* Inline links inside body copy: black, underline only on hover. */
+/* Inline links inside body copy: black text, no underline until hover — then a
+   clear BLACK underline (never the accent blue). */
 main :is(p, li, dd) a {
   color: var(--color-off-black);
   text-decoration: none;
 }
 main :is(p, li, dd) a:hover {
-  color: var(--color-accent);
+  color: var(--color-off-black);
   text-decoration: underline;
+  text-decoration-color: var(--color-off-black);
   text-decoration-thickness: 2px;
   text-underline-offset: 4px;
 }

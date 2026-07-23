@@ -93,7 +93,12 @@ const social = [
   }
   .footer__col { display: flex; flex-direction: column; gap: 12px; }
   .footer__col a { color: var(--color-body); }
-  .footer__col a:hover { color: var(--color-accent); }
+  .footer__col a:hover {
+    color: var(--color-off-black);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
   .footer__contact { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
   .footer__contact a { color: var(--color-body); }
   .footer__contact address { font-style: normal; }
