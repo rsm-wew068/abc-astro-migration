@@ -28,7 +28,7 @@ export const SITE = {
   // sameAs — external profiles reinforcing entity identity for GEO (§4/§12).
   sameAs: [
     'https://www.instagram.com/americanbuiltcabinets',
-    'https://www.linkedin.com/company/american-built-cabinets',
+    'https://www.linkedin.com/company/abcabinet',
   ],
   logo: '/images/logo.svg',
 } as const;
