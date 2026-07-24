@@ -35,15 +35,6 @@ const materialGroups = [
       { img: cf('box-mdf.jpeg'), name: 'MDF' },
     ],
   },
-  {
-    title: 'Drawer',
-    sub: 'Drawer boxes and fronts - smooth-gliding storage built for daily use.',
-    items: [
-      { img: cf('drawer-maple.jpeg'), name: 'Solid Maple' },
-      { img: cf('drawer-birch.jpeg'), name: 'Birch' },
-      { img: cf('drawer-plywood.jpeg'), name: 'Plywood' },
-    ],
-  },
 ];
 
 type Color = { slug: string; name: string; img: string; material: string; design: string; family: string };
@@ -184,7 +175,7 @@ const applied = colors.filter((c) => c.design).slice(0, 6);
   <!-- CHARACTERISTICS -->
   <section class="section section--muted chars">
     <div class="container">
-      <h2 class="center">Built to last, easy to live with.</h2>
+      <h2 class="center">Characteristics</h2>
       <div class="chars-grid">
         {characteristics.map((c) => <div class="chip">{c}</div>)}
       </div>

@@ -28,6 +28,14 @@ const groups = order
 >
   <PageHero bg={heroBg} eyebrow="Designed for Everyday Living" title="Inspired Spaces" minHeight="60vh" />
 
+  <section class="section intro">
+    <div class="container intro-inner">
+      <h2>American Built Cabinet</h2>
+      <p>American Built Cabinet is a Bay Area-based manufacturing facility specializing in precision custom cabinetry with an 80,000 sq ft factory in San Jose. With CNC technology, controlled production, and reliable lead times, we deliver American-built cabinet systems with quality you can trust.</p>
+      <p>Our showroom showcases modern cabinetry applications, finishes, and material options supported by local manufacturing power. Together with our factory capability, the showroom connects design inspiration to real production, made in the USA and built for modern living in the Bay Area.</p>
+    </div>
+  </section>
+
   {groups.map((g) => (
     <section class="section gsec">
       <div class="container">
@@ -49,6 +57,11 @@ const groups = order
 </BaseLayout>
 
 <style>
+  .intro { padding-block: clamp(48px, 7vw, 80px); }
+  .intro-inner { max-width: 780px; text-align: center; }
+  .intro h2 { margin: 0 0 20px; }
+  .intro p { margin: 0 0 18px; }
+  .intro p:last-child { margin-bottom: 0; }
   .gsec { padding-block: clamp(56px, 8vw, 96px); }
   .gsec h2 { margin: 6px 0 28px; }
   .masonry { columns: 3; column-gap: 16px; }

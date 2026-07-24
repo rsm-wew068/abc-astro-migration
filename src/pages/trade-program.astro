@@ -7,8 +7,7 @@ import heroBg from '../assets/service/hero.jpg';
 const benefits = [
   { title: 'Fast & Reliable Lead Times', desc: 'Consistent ~3-week lead times on most orders, helping you stay on schedule without compromising quality.' },
   { title: 'Local Manufacturing, Real Control', desc: 'With our 80,000 sq ft Bay Area facility, we manage production in-house, ensuring precision, flexibility, and consistent output across projects of any scale.' },
-  { title: 'Strong Local Support', desc: 'Our local team is always within reach. From design coordination to on-site issues, we respond quickly and solve problems locally, no delays, no back-and-forth, no waiting.' },
-  { title: 'Trade-Focused Pricing', desc: 'Competitive pricing tailored for builders and trade partners, designed to support project margins without sacrificing quality.' },
+  { title: 'Strong Local Support (What Sets Us Apart)', desc: 'Our local team is always within reach. From design coordination to on-site issues, we respond quickly and solve problems locally, no delays, no back-and-forth, no waiting.' },
 ];
 
 const partners = [
@@ -28,14 +27,13 @@ const partners = [
 
   <section class="section intro">
     <div class="container intro__inner">
-      <h2>A seamless, reliable, and rewarding partnership.</h2>
+      <h2>Why partner with Us</h2>
       <p>Our Trade Program is designed to support designers, architects, and builders. We combine high-quality manufacturing, efficient timelines, and competitive pricing to help bring your projects to life, on time and within budget.</p>
     </div>
   </section>
 
   <section class="section section--muted why">
     <div class="container">
-      <p class="eyebrow center">Why Partner with Us</p>
       <div class="why__grid">
         {benefits.map((b, i) => (
           <div class="bcard">
@@ -50,7 +48,7 @@ const partners = [
 
   <section class="section partners">
     <div class="container">
-      <h2 class="center">If our well-respected trade partners can trust us with their projects, so can you.</h2>
+      <h2 class="center">If Our Well Respected Trade Partners<br>Can trust us With Their Projects,<br>So Can You.</h2>
       <div class="logo-row">
         {partners.map((l) => (
           <figure class="partner">
@@ -64,8 +62,8 @@ const partners = [
 
   <section class="section section--dark cta">
     <div class="container cta__inner">
-      <h2>Book a manufacturing tour today</h2>
-      <a href="/contact" class="btn">Become a trade partner</a>
+      <h2>Become a trade partner</h2>
+      <a href="/contact" class="btn">Book a manufacturing tour today</a>
     </div>
   </section>
 </BaseLayout>
