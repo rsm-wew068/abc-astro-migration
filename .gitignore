@@ -25,3 +25,5 @@ pnpm-debug.log*
 
 # stray source asset (copied into public/)
 abc logo.jpg
+biaba.txt
+biaba-*.png
