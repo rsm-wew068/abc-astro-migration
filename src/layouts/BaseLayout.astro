@@ -26,7 +26,9 @@ const {
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, SITE.url).href;
-const ogImage = image ? new URL(image, SITE.url).href : undefined;
+// Page-specific image if given, else a default brand social image so every
+// shared link gets a proper preview.
+const ogImage = new URL(image ?? '/og-image.jpg', SITE.url).href;
 
 // Site-wide nodes on every page + any page-specific nodes, in one @graph.
 const jsonLd = graph(organizationSchema(), websiteSchema(), ...schemaNodes);
@@ -48,8 +50,9 @@ const jsonLd = graph(organizationSchema(), websiteSchema(), ...schemaNodes);
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    {ogImage && <meta property="og:image" content={ogImage} />}
+    <meta property="og:image" content={ogImage} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage} />
 
     <link rel="sitemap" href="/sitemap-index.xml" />
 
