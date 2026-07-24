@@ -210,15 +210,15 @@ const partners = [
   .review p { font-size: 15px; color: var(--color-body); margin: 0; }
 
   /* PRESS + PARTNERS */
-  /* Uniform logo cells, 3 per row (matches Framer). Each logo sits in the same
-     170x52 box and is contained, so all logos read as the same size. */
-  .logo-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 40px 56px; max-width: 680px; margin: 44px auto 0; }
+  /* Logos: 3 per row, each capped to a 194x50 box (contain) and spread wide,
+     matching the live Framer logo rows. */
+  .logo-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 56px 128px; max-width: 940px; margin: 52px auto 0; }
   .press__sub { max-width: 720px; margin: 12px auto 0; color: var(--color-body); }
-  .logo-row > img { width: 170px; height: 52px; object-fit: contain; }
-  .partner { margin: 0; text-align: center; width: 170px; }
-  .partner img { width: 100%; height: 52px; object-fit: contain; }
-  .partner figcaption { font-family: var(--font-ui); font-size: 13px; color: var(--color-body); margin-top: 10px; }
-  @media (max-width: 560px) { .logo-row { max-width: 380px; } }
+  .logo-row > img { max-width: 194px; max-height: 50px; width: auto; height: auto; object-fit: contain; }
+  .partner { margin: 0; text-align: center; }
+  .partner img { max-width: 194px; max-height: 50px; width: auto; height: auto; object-fit: contain; }
+  .partner figcaption { font-family: var(--font-ui); font-size: 13px; color: var(--color-body); margin-top: 12px; }
+  @media (max-width: 700px) { .logo-row { gap: 40px 64px; max-width: 460px; } }
 
   /* TOUR */
   .tour { position: relative; min-height: 340px; display: flex; align-items: center; overflow: hidden; }
