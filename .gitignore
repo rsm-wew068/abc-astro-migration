@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# stray source asset (copied into public/)
+abc logo.jpg

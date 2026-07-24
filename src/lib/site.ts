@@ -30,7 +30,7 @@ export const SITE = {
     'https://www.instagram.com/american.built.cabinet_sanjose/',
     'https://www.linkedin.com/company/abcabinet',
   ],
-  logo: '/images/logo.svg',
+  logo: '/images/logo.jpg',
 } as const;
 
 export type NavItem = { label: string; href: string; children?: NavItem[] };
