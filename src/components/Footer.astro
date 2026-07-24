@@ -19,10 +19,6 @@ const info = [
   { label: 'FAQ', href: '/faq' },
   { label: 'Privacy', href: '/privacy' },
 ];
-const social = [
-  { label: 'Instagram', href: SITE.sameAs[0] },
-  { label: 'LinkedIn', href: SITE.sameAs[1] },
-];
 ---
 <footer class="footer">
   <div class="container">
@@ -46,12 +42,16 @@ const social = [
           <address>{SITE.address.street}<br />{SITE.address.city}, {SITE.address.region}</address>
         </li>
       </ul>
+      <div class="footer__social">
+        <a href={SITE.sameAs[0]} rel="me" aria-label="Instagram" class="footer__social-ico">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41a3.7 3.7 0 01-1.38-.9 3.7 3.7 0 01-.9-1.38c-.16-.42-.36-1.06-.41-2.23C3.21 15.58 3.2 15.2 3.2 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.43-.16 1.06-.36 2.23-.41C8.42 2.21 8.8 2.2 12 2.2zm0 1.8c-3.15 0-3.5.01-4.75.07-.9.04-1.38.19-1.7.32-.43.16-.73.36-1.06.68-.32.33-.52.63-.68 1.06-.13.32-.28.8-.32 1.7C3.21 8.5 3.2 8.85 3.2 12s.01 3.5.07 4.75c.04.9.19 1.38.32 1.7.16.43.36.73.68 1.06.33.32.63.52 1.06.68.32.13.8.28 1.7.32 1.25.06 1.6.07 4.75.07s3.5-.01 4.75-.07c.9-.04 1.38-.19 1.7-.32.43-.16.73-.36 1.06-.68.32-.33.52-.63.68-1.06.13-.32.28-.8.32-1.7.06-1.25.07-1.6.07-4.75s-.01-3.5-.07-4.75c-.04-.9-.19-1.38-.32-1.7a2.85 2.85 0 00-.68-1.06 2.85 2.85 0 00-1.06-.68c-.32-.13-.8-.28-1.7-.32C15.5 4.01 15.15 4 12 4zm0 3.06A4.94 4.94 0 1012 17a4.94 4.94 0 000-9.88zm0 8.14A3.2 3.2 0 1112 8.8a3.2 3.2 0 010 6.4zm6.3-8.34a1.15 1.15 0 11-1.15-1.15 1.15 1.15 0 011.15 1.15z"/></svg>
+        </a>
+        <a href={SITE.sameAs[1]} rel="me" aria-label="LinkedIn" class="footer__social-ico">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 11-.02 5 2.5 2.5 0 01.02-5zM3 8.98h4V21H3V8.98zM9.5 8.98h3.8v1.64h.05c.53-1 1.82-2.06 3.75-2.06 4.01 0 4.75 2.64 4.75 6.07V21h-4v-5.38c0-1.28-.02-2.93-1.78-2.93-1.79 0-2.06 1.4-2.06 2.84V21h-4V8.98z"/></svg>
+        </a>
+      </div>
     </div>
 
-    <div class="footer__col">
-      <p class="footer__heading">Follow Us</p>
-      {social.map((l) => <a href={l.href} rel="me">{l.label}</a>)}
-    </div>
     <div class="footer__col">
       <p class="footer__heading">Pages</p>
       {pages.map((l) => <a href={l.href}>{l.label}</a>)}
@@ -89,7 +89,7 @@ const social = [
   .footer__logo { width: 200px; height: auto; display: block; margin-bottom: 44px; }
   .footer__grid {
     display: grid;
-    grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1.7fr 1fr 1fr 1fr;
     gap: 32px;
     align-items: start;
   }
@@ -115,6 +115,10 @@ const social = [
   .footer__ico svg { width: 22px; height: 22px; display: block; }
   .footer__contact a { color: var(--color-body); }
   .footer__contact address { font-style: normal; color: var(--color-body); }
+  .footer__social { display: flex; gap: 16px; margin-top: 22px; }
+  .footer__social-ico { color: var(--color-off-black); line-height: 0; transition: opacity 0.2s ease; }
+  .footer__social-ico svg { width: 24px; height: 24px; display: block; }
+  .footer__social-ico:hover { opacity: 0.6; }
   .footer__bottom {
     display: flex;
     justify-content: space-between;

@@ -32,12 +32,16 @@ const reviews = [
   '"Great experience with ABC Cabinet. We did a full kitchen (20\'×16\') and a closet, and everything went smoothly. Timeline was accurate (about 3.5 weeks), and they were very nice and responsive the whole time. Any small issues were handled quickly. Solid work and easy to deal with, I would recommend…"',
 ];
 
+// NOTE: press image filenames were cross-labeled in the original migration
+// (all-india-radio.png actually shows Sing Tao, world-journal.jpeg shows All
+// India Radio, sing-tao.png shows World Journal). Names/alt below match the
+// ACTUAL logo each file displays.
 const press = [
-  { src: '/images/press/luxe.png', alt: 'LUXE Interiors + Design' },
-  { src: '/images/press/mercury-news.jpg', alt: 'The Mercury News' },
-  { src: '/images/press/all-india-radio.png', alt: 'All India Radio' },
-  { src: '/images/press/world-journal.jpeg', alt: 'World Journal' },
-  { src: '/images/press/sing-tao.png', alt: 'Sing Tao Daily' },
+  { src: '/images/press/luxe.png', alt: 'LUXE Interiors + Design', name: 'LUXE' },
+  { src: '/images/press/mercury-news.jpg', alt: 'The Mercury News', name: 'The Mercury News' },
+  { src: '/images/press/all-india-radio.png', alt: 'Sing Tao Daily', name: 'Sing Tao Daily' },
+  { src: '/images/press/world-journal.jpeg', alt: 'All India Radio', name: 'All India Radio' },
+  { src: '/images/press/sing-tao.png', alt: 'World Journal', name: 'World Journal' },
 ];
 
 const partners = [
@@ -128,7 +132,12 @@ const partners = [
       <h2 class="center">We can be seen here.</h2>
       <p class="center press__sub">American Built Cabinets has been featured in The Mercury News, LUXE, World Journal, and Sing Tao Daily.</p>
       <div class="logo-row">
-        {press.map((l) => <img src={l.src} alt={l.alt} loading="lazy" />)}
+        {press.map((l) => (
+          <figure class="logo-item">
+            <img src={l.src} alt={l.alt} loading="lazy" />
+            <figcaption>{l.name}</figcaption>
+          </figure>
+        ))}
       </div>
     </div>
   </section>
@@ -139,7 +148,7 @@ const partners = [
       <h2 class="center">We are your trusted partner in custom cabinetry.</h2>
       <div class="logo-row">
         {partners.map((l) => (
-          <figure class="partner">
+          <figure class="logo-item">
             <img src={l.src} alt={l.alt} loading="lazy" />
             <figcaption>{l.alt}</figcaption>
           </figure>
@@ -210,15 +219,14 @@ const partners = [
   .review p { font-size: 15px; color: var(--color-body); margin: 0; }
 
   /* PRESS + PARTNERS */
-  /* Logos: 3 per row, each capped to a 194x50 box (contain) and spread wide,
-     matching the live Framer logo rows. */
-  .logo-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 56px 128px; max-width: 940px; margin: 52px auto 0; }
+  /* Logos: exactly 3 per row, each with a name caption, capped to a 194x50 box
+     (contain). Matches the live Framer logo rows. */
+  .logo-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 52px 3%; max-width: 920px; margin: 52px auto 0; }
   .press__sub { max-width: 720px; margin: 12px auto 0; color: var(--color-body); }
-  .logo-row > img { max-width: 194px; max-height: 50px; width: auto; height: auto; object-fit: contain; }
-  .partner { margin: 0; text-align: center; }
-  .partner img { max-width: 194px; max-height: 50px; width: auto; height: auto; object-fit: contain; }
-  .partner figcaption { font-family: var(--font-ui); font-size: 13px; color: var(--color-body); margin-top: 12px; }
-  @media (max-width: 700px) { .logo-row { gap: 40px 64px; max-width: 460px; } }
+  .logo-item { flex: 0 0 30%; margin: 0; display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; }
+  .logo-item img { max-width: 194px; max-height: 50px; width: auto; height: auto; object-fit: contain; }
+  .logo-item figcaption { font-family: var(--font-ui); font-size: 13px; color: var(--color-body); }
+  @media (max-width: 700px) { .logo-item { flex-basis: 44%; } }
 
   /* TOUR */
   .tour { position: relative; min-height: 340px; display: flex; align-items: center; overflow: hidden; }
